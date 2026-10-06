@@ -1,0 +1,66 @@
+name: VoiceOver transcripts (anthonyshealthhutlakeland.com baseline)
+
+on:
+  workflow_dispatch:
+    inputs:
+      read_scale:
+        description: "Multiplier for the linear read-through length (1 = default per page)"
+        default: "1"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  voiceover:
+    name: VoiceOver / ${{ matrix.browser }} / ${{ matrix.page }}
+    runs-on: macos-15
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      # One macOS runner per page so the templates run in parallel (VoiceOver allows one session per machine).
+      matrix:
+        include:
+          - { browser: webkit, page: home }
+          - { browser: webkit, page: about-us }
+          - { browser: webkit, page: contact-us }
+          - { browser: webkit, page: menu }
+          - { browser: webkit, page: vitamins-and-minerals }
+          - { browser: chromium, page: home }
+    env:
+      VO_PAGES: ${{ matrix.page }}
+      VO_READ_SCALE: ${{ inputs.read_scale }}
+      RUNNER_OS_LABEL: macos-15
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      # Accessibility permissions in the user TCC.db, AppleScript control of VoiceOver, welcome dialog suppressed.
+      - name: Prepare macOS for VoiceOver automation
+        run: npx -y @guidepup/setup@0.29.1 setup --ci
+
+      - name: Install npm dependencies
+        run: npm ci --no-audit --no-fund --no-progress
+
+      - name: Install Playwright browser
+        run: npx playwright install ${{ matrix.browser }}
+
+      - name: Install Guidepup VoiceOver assets
+        run: npx -y @guidepup/setup@0.29.1 install
+
+      - name: Run the real VoiceOver session and write the transcript
+        run: npx playwright test --project=${{ matrix.browser }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: voiceover-${{ matrix.browser }}-${{ matrix.page }}
+          if-no-files-found: warn
+          path: |
+            transcripts/**
+            test-results/**
+            playwright-report/**

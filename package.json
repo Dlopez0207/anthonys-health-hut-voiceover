@@ -1,0 +1,17 @@
+{
+  "name": "anthonys-health-hut-voiceover",
+  "private": true,
+  "description": "Real macOS VoiceOver sessions (Guidepup + Playwright) against anthonyshealthhutlakeland.com (baseline, before remediation)",
+  "scripts": {
+    "test:webkit": "playwright test --project=webkit",
+    "test:chromium": "playwright test --project=chromium",
+    "list": "playwright test --list"
+  },
+  "devDependencies": {
+    "@guidepup/guidepup": "^0.35.0",
+    "@guidepup/playwright": "^0.19.1",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  }
+}
