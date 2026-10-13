@@ -7,7 +7,8 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { release } from "node:os";
 
-const ORIGIN = "https://www.anthonyshealthhutlakeland.com";
+const ORIGIN = process.env.VO_ORIGIN ?? "https://www.anthonyshealthhutlakeland.com";
+const RETEST = ORIGIN.startsWith("http://localhost");
 const PAGES = [
   { slug: "home", path: "/", read: 220 },
   { slug: "about-us", path: "/about-us", read: 170 },
@@ -25,7 +26,7 @@ const READ_SCALE = Number(process.env.VO_READ_SCALE ?? 1);
 type Section = { title: string; phrases: string[]; end: string };
 const num = (i: number) => String(i).padStart(3, " ");
 
-test.describe("VoiceOver — anthonyshealthhutlakeland.com (baseline)", () => {
+test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, corrected copy)" : "VoiceOver — anthonyshealthhutlakeland.com (baseline)", () => {
   for (const pg of selected) {
     test(`${pg.slug}: read-through, headings, landmarks and Tab order`, async ({ page, voiceOver, browserName }, testInfo) => {
       const url = `${ORIGIN}${pg.path}`;
@@ -88,7 +89,7 @@ test.describe("VoiceOver — anthonyshealthhutlakeland.com (baseline)", () => {
         `Browser: ${browserName} (Playwright project "${testInfo.project.name}")`,
         `Runner: GitHub Actions ${process.env.RUNNER_OS_LABEL ?? "local"}`,
         `Session date (UTC): ${new Date().toISOString()}`,
-        `Mode: real session, published site, no remediation applied`,
+        RETEST ? `Mode: real session, corrected staging copy (published pages + Head HTML ${process.env.VO_PACKAGE ?? "v1.2.0"} + simulated Duda editor changes), served on the runner` : `Mode: real session, published site, no remediation applied`,
         `Third-party overlays present: ${overlays}`,
         `Phrases captured: ${total}`,
         ``,

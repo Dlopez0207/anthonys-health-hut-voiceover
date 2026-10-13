@@ -1,4 +1,4 @@
-name: VoiceOver transcripts (anthonyshealthhutlakeland.com baseline)
+name: VoiceOver transcripts (anthonyshealthhutlakeland.com)
 
 on:
   workflow_dispatch:
@@ -6,6 +6,10 @@ on:
       read_scale:
         description: "Multiplier for the linear read-through length (1 = default per page)"
         default: "1"
+        required: false
+      target:
+        description: "baseline = published site; retest = corrected staging copy served on the runner"
+        default: "retest"
         required: false
 
 permissions:
@@ -31,6 +35,8 @@ jobs:
       VO_PAGES: ${{ matrix.page }}
       VO_READ_SCALE: ${{ inputs.read_scale }}
       RUNNER_OS_LABEL: macos-15
+      VO_ORIGIN: ${{ inputs.target == 'baseline' && 'https://www.anthonyshealthhutlakeland.com' || 'http://localhost:4173' }}
+      VO_PACKAGE: v1.2.0
     steps:
       - uses: actions/checkout@v6
 
@@ -52,6 +58,14 @@ jobs:
       - name: Install Guidepup VoiceOver assets
         run: npx -y @guidepup/setup@0.29.1 install
 
+      - name: Start the corrected staging copy (published pages + fix package, GET-only proxy)
+        if: inputs.target != 'baseline'
+        run: |
+          nohup node fixed/staging/server.mjs > staging.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://localhost:4173/__staging/health && break; sleep 2; done
+          curl -fsS -o /dev/null -w "page %{http_code} " http://localhost:4173/
+          curl -fsS -A "Mozilla/5.0 (Macintosh)" http://localhost:4173/menu | grep -c "Restaurant Menu" || true
+
       - name: Run the real VoiceOver session and write the transcript
         run: npx playwright test --project=${{ matrix.browser }}
 
@@ -64,3 +78,4 @@ jobs:
             transcripts/**
             test-results/**
             playwright-report/**
+            staging.log

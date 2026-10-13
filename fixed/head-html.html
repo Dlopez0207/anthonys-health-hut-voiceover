@@ -1,0 +1,1161 @@
+<!-- ADA fixes for anthonyshealthhutlakeland.com v1.2.0 (built 2026-10-13). Paste this whole block in Duda:
+     Site Settings > Head HTML (site-wide; desktop and phone layouts). Source with comments: ada-fixes.css + ada-fixes.js.
+     Each fix is marked "ADA fix (WCAG x.x.x)" with its Exhibit B finding (F1-F12, A1-A14) and change row (C1-C13).
+     Hosted-file alternative: see head-html.hosted.html (change ?v=1.2.0 on every update for cache busting). -->
+<style id="ada-fixes-css" data-version="1.2.0">
+/*! ADA fixes for anthonyshealthhutlakeland.com - CSS v1.2.0 (2026-10-13)
+    Site-wide, desktop and phone layouts. Goes inside <style> in Duda: Site Settings > Head HTML
+    (hosted-file alternative: link it with ?v=1.2.0 and change that number on every update).
+    v1.2.0: AAA colors (WCAG 1.4.6) are part of the package (client directive: 100 in every tool) and the Google map
+    of /contact-us loads on request (C15).
+    Every block is marked "ADA fix (WCAG x.x.x)" with the finding of Exhibit B (Revised October 9, 2026)
+    (F = confirmed failure, A = advisory recommendation) and the change-matrix row (C1-C15). */
+
+/* ADA fix (best practice; advisory technique G201) - A2, A4 (C9): shared helper, text for assistive technology only
+   (" (opens in a new window)" added to links by the script) */
+.ada-sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+
+/* ADA fix (best practice; WCAG 2.4.1) - A11 (C12): "Skip to main content" link, off screen until it receives keyboard focus */
+.ada-skip { position: fixed; left: 8px; top: -120px; z-index: 2147483647; padding: 10px 16px; background: #0c4a08; color: #ffffff !important; font: 700 16px/1.2 Arial, Helvetica, sans-serif; text-decoration: underline; border-radius: 4px; }
+.ada-skip:focus { top: 8px; outline: 3px solid #ffbf47; outline-offset: 2px; }
+/* the skip-link target is the main container (tabindex="-1" only while the skip link has moved focus there, see
+   ada-fixes.js RF-1), not a control: no focus ring around the whole page */
+#dm_content[tabindex="-1"]:focus { outline: none; }
+
+/* ADA fix (WCAG 1.4.10 Reflow) - F8 (C1): the desktop layout kept a minimum width of 768 px, so at 320 CSS px
+   (400% zoom) every line needed horizontal scrolling. Desktop/tablet pages only: the phone layout already reflows. */
+@media (max-width: 767px) {
+  body:not(.dmMobileBody) .dmInner, body:not(.dmMobileBody) #dmStyle_innerContainer, body:not(.dmMobileBody) .dmLayoutWrapper, body:not(.dmMobileBody) #site_content { min-width: 0 !important; width: 100% !important; }
+}
+@media (max-width: 480px) {
+  /* stack the two-column rows of the content and the footer */
+  body:not(.dmMobileBody) .dmContent .dmRespColsWrapper, body:not(.dmMobileBody) .dmFooterContainer .dmRespColsWrapper { flex-wrap: wrap !important; }
+  body:not(.dmMobileBody) .dmContent .dmRespCol, body:not(.dmMobileBody) .dmFooterContainer .dmRespCol { width: 100% !important; max-width: 100% !important; flex: 1 1 100% !important; }
+  /* header: phone number and "Daily Specials" stack inside their column; the number stays on one line */
+  body:not(.dmMobileBody) #hamburger-header .dmRespColsWrapper > .dmRespCol:first-child { flex: 0 0 76px !important; }
+  body:not(.dmMobileBody) #hamburger-header .dmRespColsWrapper > .dmRespCol:not(:first-child) { flex: 1 1 0 !important; min-width: 0 !important; flex-wrap: wrap !important; align-content: center !important; justify-content: center !important; }
+  body:not(.dmMobileBody) #hamburger-header a[href^="tel:"] { width: auto !important; flex: 0 0 100% !important; }
+  body:not(.dmMobileBody) #hamburger-header a[href^="tel:"] * { white-space: nowrap !important; font-size: 14px !important; }
+  /* ADA fix (WCAG 1.4.3) - F8 (C1), review fix RF-7: once the columns are stacked, the home-page text "Reach Your Health
+     Goals..." and its two paragraphs sit over the shelf photo, whose white overlay fades from left to right
+     (".gradient-ltr", transparent from 75 % of the width), so words fell on dark bottles (about 12 % of the glyph-edge
+     pixels below 4.5:1 at 320 px). As in Duda's own phone layout of this row, the overlay runs from top to bottom
+     instead: white over the top third, then at least 60 % white, so black text keeps at least 7:1 and the dark brown
+     heading at least 6:1 over any photo pixel. Only the narrow desktop layout; the photo stays visible. */
+  body:not(.dmMobileBody) .dmInner .gradient-ltr::before { background-image: linear-gradient(180deg, #ffffff 33%, rgba(255, 255, 255, 0.6) 100%) !important; }
+  /* headings sized for a narrow viewport so that words are not broken */
+  body:not(.dmMobileBody) .dmInner .font-size-80 { font-size: 40px !important; line-height: 1.1 !important; }
+  /* ADA fix (WCAG 1.4.10) - F8 (C1), battery fix V1: only the LARGE headings shrink to 28px. Headings whose Duda size
+     class is 10-29px (block class size-1x / size-2x: footer "STORE", "RESTAURANT", "Company Info", "Links", the
+     /thank-you message) and the headings of our menu widget (class ada-...) keep their own size, so nothing grows.
+     :where() keeps the specificity of the rule unchanged (the .font-size-80 rule above still wins for the hero). */
+  body:not(.dmMobileBody) .dmInner h1:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])),
+  body:not(.dmMobileBody) .dmInner h1:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])) *,
+  body:not(.dmMobileBody) .dmInner h2:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])),
+  body:not(.dmMobileBody) .dmInner h2:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])) *,
+  body:not(.dmMobileBody) .dmInner h3:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])),
+  body:not(.dmMobileBody) .dmInner h3:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])) * { font-size: 28px !important; line-height: 1.25 !important; }
+  /* ADA fix (WCAG 1.4.10) - F8 (C1), battery fix 2 VR-1/VR-2: these 28px headings are all set in the theme font
+     Caprasimo, which has no fallback in the theme ("font-family: Caprasimo"), so until the webfont arrives (~2 s) the
+     browser painted them in Times New Roman, about 24% narrower: fewer lines, then a re-wrap and a layout shift when
+     Caprasimo loaded (home 0.041, /menu 0.007-0.010 at 320 px). The fallback below is Georgia scaled to Caprasimo's
+     width (font-face further down), so the first paint already breaks the lines like Caprasimo. Only the heading
+     element gets the stack, which its text inherits; text that names Caprasimo in its own inline style (the home hero
+     title span) gets it too. No other font is replaced (all 63 headings reached here render in Caprasimo). */
+  body:not(.dmMobileBody) .dmInner h1:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])),
+  body:not(.dmMobileBody) .dmInner h1:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])) [style*="Caprasimo"],
+  body:not(.dmMobileBody) .dmInner h2:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])),
+  body:not(.dmMobileBody) .dmInner h2:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])) [style*="Caprasimo"],
+  body:not(.dmMobileBody) .dmInner h3:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])),
+  body:not(.dmMobileBody) .dmInner h3:where(:not([class^="size-1"]):not([class*=" size-1"]):not([class^="size-2"]):not([class*=" size-2"]):not([class*="ada-"])) [style*="Caprasimo"] { font-family: Caprasimo, "ADA Caprasimo Fallback" !important; }
+}
+/* ADA fix (WCAG 1.4.10; related 2.4.11) - F8 (C1), review fix RF-8 (ada-audit AA-1): in a short narrow window (for example
+   320 x 256 CSS px = 400 % zoom of a 1280 x 1024 window) the fixed narrow-window header (phone number, "Daily Specials",
+   menu button) took about half of the height (129 px of 256, because C1 lets its content wrap instead of overflowing).
+   When the window is at most 400 px tall the header and its menu button scroll away with the page instead of staying
+   fixed; at the top of the page nothing moves (same place, same size). The positioned wrapper of the header is made
+   static so that both are placed from the top of the page. Wider or taller windows keep Duda's fixed header. */
+@media (max-width: 767px) and (max-height: 400px) {
+  body:not(.dmMobileBody) #site_content > .site_content { position: static !important; }
+  body:not(.dmMobileBody) #hamburger-header-container, body:not(.dmMobileBody) #site_content .layout-drawer-hamburger.hamburger-on-header { position: absolute !important; }
+}
+
+/* ADA fix (WCAG 1.4.10) - F8 (C1), battery fix 2 VR-1/VR-2: metric-matched fallback for Caprasimo, used only by the rule
+   above (narrow desktop layout). Local Georgia, no download; size-adjust 114.3% = mean width ratio Caprasimo / Georgia
+   over the 42 heading texts of the site (spread 1.098-1.176, the closest of 8 system fonts); ascent/descent as
+   Caprasimo (0.92 / 0.23 em). If Georgia is missing the stack ends at the browser's default font, as before. */
+@font-face { font-family: "ADA Caprasimo Fallback"; src: local("Georgia"), local("Georgia Regular"); font-weight: 400; font-style: normal; size-adjust: 114.3%; ascent-override: 80.5%; descent-override: 20.1%; line-gap-override: 0%; }
+
+/* ADA fix (WCAG 2.5.8) - A1 (C5), battery fix N2: the top-level links of the desktop menu bar were 21px tall. Their
+   box grows to 24px and the negative margins give the space back, so the bar, the text and the submenus do not move;
+   every top-level target is now at least 24 x 24 CSS px (no spacing exception needed). (the selectors outrank Duda's own
+   "#dm .p_hfcontainer .u_ID.main-navigation ... { margin: 0 !important }" rule of the menu items.) */
+body #dm .p_hfcontainer nav.main-navigation.unifiednav[data-ada-nav="menubar"] .unifiednav__container:not(.unifiednav__container_sub-nav) > .unifiednav__item-wrap > a.unifiednav__item,
+body #dm nav.main-navigation.unifiednav[data-ada-nav="menubar"] .unifiednav__container:not(.unifiednav__container_sub-nav) > .unifiednav__item-wrap > a.unifiednav__item,
+[data-ada-nav="menubar"] .unifiednav__container:not(.unifiednav__container_sub-nav) > .unifiednav__item-wrap > a.unifiednav__item { box-sizing: border-box !important; min-height: 24px !important; margin-top: -1.5px !important; margin-bottom: -1.5px !important; }
+
+/* ADA fix (WCAG 1.4.11) - F6 (C2): form field borders at least 3:1 against the page and the field fill
+   (#3D7A37; it was #B8D9B3, 1.30-1.51:1) */
+/* (selectors carry #dm and body to outrank Duda's own "!important" widget rule: #dm .p_hfcontainer div.u_... input) */
+body #dm .dmform .dmforminput input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+body #dm .dmform .dmforminput textarea:not(.g-recaptcha-response),
+body #dm .dmform .dmforminput select { border-color: #3D7A37 !important; }
+
+/* ADA fix (WCAG 1.4.11) - F7 (C3): phone-header menu button lines and call icon at least 3:1 on white
+   (#3D7A37; they were #65C057, 2.27:1) */
+.layout-drawer-hamburger .hamburger__slice { background-color: #3D7A37 !important; border-color: #3D7A37 !important; }
+.hamburger-header a[href^="tel:"] svg, .hamburger-header a[href^="tel:"] svg *, a[href^="tel:"][data-ada-call] svg, a[href^="tel:"][data-ada-call] svg * { fill: #3D7A37 !important; }
+
+/* ADA fix (WCAG 2.4.11) - F9 (C4): the fixed reCAPTCHA badge covered the last footer link when focused; it is hidden
+   (visibility, as Google allows) and Google's notice is shown under each form (added by the script) */
+.grecaptcha-badge { visibility: hidden !important; }
+.ada-recaptcha-note { margin: 8px 0 0 !important; font-size: 13px !important; line-height: 1.4 !important; color: #1a1a1a !important; text-align: left !important; }
+.ada-recaptcha-note a { color: #0c4a08 !important; text-decoration: underline !important; }
+
+/* ADA fix (WCAG 4.1.2 related; best practice) - A1 (C5): collapsed submenus are hidden from assistive technology
+   (Duda only made them transparent, so screen readers read all their links). Header menu bar: a submenu is shown while
+   it is open from the keyboard/click (ada-open, set by the script) or hovered; phone drawer: while it is expanded. */
+[data-ada-nav="menubar"] .unifiednav__item-wrap > .unifiednav__container_sub-nav { visibility: hidden !important; }
+[data-ada-nav="menubar"] .unifiednav__item-wrap.ada-open > .unifiednav__container_sub-nav,
+[data-ada-nav="menubar"] .unifiednav__item-wrap:hover:not(.ada-dismissed) > .unifiednav__container_sub-nav { visibility: visible !important; }
+[data-ada-nav="disclosure"] .unifiednav__item-wrap:not(.ada-open) > .unifiednav__container_sub-nav { visibility: hidden !important; }
+/* ADA fix (WCAG 1.3.1 related; best practice) - A1 (C5), review fix RF-5: the closed menu drawer (aria-hidden, inert and
+   off screen) is also visibility:hidden once its closing slide has finished (class set by the script) */
+.layout-drawer.ada-drawer-closed, .hamburger-drawer.ada-drawer-closed { visibility: hidden !important; }
+
+/* ADA fix (WCAG 1.4.13) - F1 (C5): a submenu dismissed with Escape stays closed until the pointer leaves it */
+[data-ada-nav] .unifiednav__item-wrap.ada-dismissed > .unifiednav__container_sub-nav { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+
+/* ADA fix (WCAG 3.3.2) - F4, A13 (C6): visible labels above the contact-form fields (the placeholders disappeared
+   while typing) and a visible "*" on required fields (Duda's own marker, darker for contrast); the script adds
+   aria-required and the "* indicates a required field" instruction. */
+body #dm div.dmInner .dmform .dmforminput > label[hide="true"], .dmform .dmforminput > label[hide="true"] { display: block !important; position: static !important; visibility: visible !important; width: auto !important; height: auto !important; clip: auto !important; overflow: visible !important; margin: 0 0 4px !important; padding: 0 !important; font-size: 15px !important; line-height: 1.3 !important; color: #1a1a1a !important; text-align: left !important; }
+.dmform .dmforminput.required > label::after { content: "*"; display: inline-block; margin-inline-start: 4px; color: #a30000 !important; font-weight: 700; }
+.ada-form-note { margin: 0 0 8px !important; font-size: 15px !important; line-height: 1.3 !important; color: #1a1a1a !important; text-align: left !important; }
+
+/* ADA fix (WCAG 1.4.3) - FM-14 (C8; found by the test battery, not in Exhibit B): the messages Duda shows after the
+   form is sent ("Oops, there was an error sending your message..." and the inline "Thank you for contacting us.")
+   were #F7F7F7 on the white form panel (1.03-1.08:1). Dark text #1D1D1B: about 16:1 on that panel. */
+body #dm .dmform .dmform-error, body #dm .dmform .dmform-error *, body #dm .dmform .dmform-success, body #dm .dmform .dmform-success *,
+.dmform .dmform-error, .dmform .dmform-error *, .dmform .dmform-success, .dmform .dmform-success * { color: #1D1D1B !important; }
+
+/* ADA fix (WCAG 1.4.6, AAA) - client directive 100 (v1.2.0; EqualWeb EW-1, was the optional ada-fixes-aaa.css of v1.1.1):
+   desktop menu bar background #0c7600 -> #085500. White labels go from 5.82:1 to 9.1:1 and the current-page label
+   (#e7ede4) from 4.88:1 to 7.6:1. Duda row u_1425559235 = the green bar of the desktop header (global section); the
+   selected submenu item uses the same green. Visible change: a darker brand green in the desktop menu bar. */
+body:not(.dmMobileBody) #dm .dmRespRow.u_1425559235 { background-color: #085500 !important; }
+body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { background-color: #085500 !important; }
+
+/* ADA fix (WCAG 1.4.6, AAA) - client directive 100 (v1.2.0; EqualWeb EW-2): the "Download the menu (PDF, 2 pages)" link
+   of our menu section (E5) #0C6937 (6.79:1) -> #0A5A2F (8.4:1 on white). The rest of the menu section keeps the printed
+   menu's green. */
+#ada-menu .ada-menu-download a { color: #0A5A2F !important; }
+
+/* ADA fix (WCAG 2.4.11, 2.5.8, 4.1.2 of the embedded map; best practice) - C15 (v1.2.0): the /contact-us Google map loads
+   on request. Before that, the map widget shows the address, the "Show interactive map (Google Maps)" button and the
+   "Open in Google Maps" link (built by the script) inside the widget's own box (636 px desktop, 250 px phone), so
+   nothing moves on load. When the visitor shows the map, Google's iframe gets the box's height and the link stays
+   under it (the widget grows by the link's line, a change the visitor asked for).
+   Colors: text #1a1a1a and #0c4a08 on white (17:1, 10.6:1), button white on #0c4a08 (10.6:1), focus outlines #0c4a08
+   (10.6:1 against white). Targets at least 44 px tall. */
+.ada-map { box-sizing: border-box !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; gap: 12px !important; width: 100% !important; height: 100% !important; min-height: 0 !important; overflow: visible !important; margin: 0 !important; padding: 16px !important; background: #ffffff !important; border: 1px solid #3D7A37 !important; text-align: center !important; color: #1a1a1a !important; font: 400 16px/1.5 Arial, Helvetica, sans-serif !important; }
+.ada-map[data-ada-map="loaded"] { height: auto !important; justify-content: flex-start !important; gap: 4px !important; padding: 0 !important; border: 0 !important; }
+.ada-map[data-ada-map="loaded"] > iframe { display: block !important; flex: 0 0 auto !important; width: 100% !important; border: 0 !important; }
+.ada-map:focus { outline: 3px solid #0c4a08 !important; outline-offset: 2px !important; }
+.ada-map .ada-map-address { margin: 0 !important; padding: 0 !important; color: #1a1a1a !important; font: inherit !important; }
+.ada-map .ada-map-show { display: inline-block !important; min-height: 44px !important; margin: 0 !important; padding: 10px 20px !important; border: 2px solid #0c4a08 !important; border-radius: 4px !important; background: #0c4a08 !important; color: #ffffff !important; font: 700 16px/1.25 Arial, Helvetica, sans-serif !important; cursor: pointer !important; }
+.ada-map .ada-map-show:hover { background: #ffffff !important; color: #0c4a08 !important; }
+.ada-map .ada-map-show:focus-visible { outline: 3px solid #0c4a08 !important; outline-offset: 3px !important; }
+.ada-map .ada-map-open { display: inline-block !important; min-height: 24px !important; padding: 10px 4px !important; color: #0c4a08 !important; font: inherit !important; text-decoration: underline !important; }
+.ada-map .ada-map-open:focus-visible { outline: 3px solid #0c4a08 !important; outline-offset: 2px !important; }
+</style>
+<script id="ada-fixes-js" data-version="1.2.0">
+/*! ADA fixes for anthonyshealthhutlakeland.com - JS v1.2.0 (2026-10-13)
+    Site-wide, desktop and phone layouts. Goes inside <script> in Duda: Site Settings > Head HTML
+    (hosted-file alternative: load it with ?v=1.2.0 and change that number on every update).
+    v1.1.0-v1.1.1 (review fixes): skip-link target focusable only while the skip link uses it, Escape dismisses every
+    hover-opened submenu, no changes inside the Duda editor, PhotoSwipe/drawer hidden states, robust form messages.
+    v1.2.0: Google reCAPTCHA loaded on first use of the form (C14) and the Google map loaded on request (C15).
+    Change-matrix rows C4-C15 (C1-C3 are CSS only). Every block is marked "ADA fix (WCAG x.x.x)" with the
+    finding of Exhibit B (Revised October 9, 2026): F = confirmed failure, A = advisory recommendation.
+    It cooperates with Duda's own scripts: it adds roles, states, names and the keys Duda does not handle,
+    and never removes Duda's listeners. No dependencies, no console output; status in window.adaFixes. */
+(function (w, d) {
+  'use strict';
+
+  var VERSION = '1.2.0';
+  // ADA fix (best practice) - idempotent: a second copy of this script (for example Head HTML + hosted file) does nothing.
+  if (w.adaFixes && w.adaFixes.version) return;
+  var EP = w.Element && w.Element.prototype;
+  // Feature detection: a browser without these APIs keeps the site exactly as Duda renders it.
+  if (!EP || !EP.closest || !EP.matches || !d.querySelectorAll || !d.addEventListener || !('classList' in d.documentElement)) return;
+
+  var api = w.adaFixes = { version: VERSION, applied: {}, errors: [], runs: 0 };
+  var NEW_WINDOW = ' (opens in a new window)';
+  var uid = 0;
+  var menubars = [];
+  var lastTabBack = false;
+
+  // ---------------------------------------------------------------- helpers
+  function all(sel, root) { return Array.prototype.slice.call((root || d).querySelectorAll(sel)); }
+  function attempt(id, fn) {
+    try { fn(); api.applied[id] = (api.applied[id] || 0) + 1; } catch (err) { if (api.errors.length < 25) api.errors.push(id + ': ' + ((err && err.message) || err)); }
+  }
+  function setAttr(el, name, value) { if (el.getAttribute(name) !== value) el.setAttribute(name, value); }
+  function rmAttr(el, name) { if (el.hasAttribute(name)) el.removeAttribute(name); }
+  function setClass(el, name, on) { if (el.classList.contains(name) !== on) { if (on) el.classList.add(name); else el.classList.remove(name); } }
+  function squash(s) { return (s || '').replace(/\s+/g, ' ').trim(); } // \s includes the no-break space
+  function child(parent, tag) { for (var c = parent && parent.firstElementChild; c; c = c.nextElementSibling) if (c.nodeName === tag) return c; return null; }
+  function children(parent, tag) { var out = []; for (var c = parent && parent.firstElementChild; c; c = c.nextElementSibling) if (c.nodeName === tag) out.push(c); return out; }
+  function shown(el) {
+    if (!el || !el.getClientRects().length) return false;
+    var cs = w.getComputedStyle(el);
+    return cs.visibility !== 'hidden' && cs.display !== 'none';
+  }
+  // Text a sighted user sees: skips SVG titles, aria-hidden content and our own screen-reader-only text.
+  function visibleText(el) {
+    var out = '';
+    (function walk(node) {
+      for (var c = node.firstChild; c; c = c.nextSibling) {
+        if (c.nodeType === 3) out += c.nodeValue;
+        else if (c.nodeType === 1) {
+          var tag = c.nodeName.toLowerCase();
+          if (tag === 'svg' || tag === 'title' || tag === 'script' || tag === 'style' || c.getAttribute('aria-hidden') === 'true' || c.classList.contains('ada-sr-only')) continue;
+          walk(c);
+        }
+      }
+    })(el);
+    return squash(out);
+  }
+  function keyOf(e) {
+    var k = e.key;
+    if (k === 'Esc') return 'Escape';
+    if (k === 'Left' || k === 'Right' || k === 'Up' || k === 'Down') return 'Arrow' + k;
+    if (k === 'Spacebar') return ' ';
+    return k;
+  }
+  function stop(e) { e.preventDefault(); e.stopPropagation(); }
+  function focusables(root) {
+    return all('a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), iframe, [tabindex]', root)
+      .filter(function (el) { return el.getAttribute('tabindex') !== '-1' && shown(el); });
+  }
+
+  // ---------------------------------------------------------------- C12: skip link and landmarks
+  // ADA fix (best practice; WCAG 2.4.1) - A11: "Skip to main content" link, first in the tab order, visible on focus,
+  // moving keyboard focus to the main content (#dm_content).
+  // ADA fix (WCAG 2.4.3) - A11, review fix RF-1: the main container is made focusable (tabindex="-1") only when the skip
+  // link moves focus to it, and the tabindex is removed again as soon as focus leaves it. A permanent tabindex made a
+  // mouse click or tap on any text in main focus the whole container, so the next Tab jumped back to the first control
+  // of main and the page scrolled up (the sequential focus starting point was lost).
+  function skipLink() {
+    var main = d.getElementById('dm_content') || d.querySelector('[role="main"], main');
+    if (!main || !d.body) return;
+    if (!main.id) main.id = 'ada-main';
+    var a = d.querySelector('a.ada-skip');
+    if (!a) {
+      a = d.createElement('a');
+      a.className = 'ada-skip';
+      a.href = '#' + main.id;
+      a.textContent = 'Skip to main content';
+      a.addEventListener('click', function (e) {
+        var target = d.getElementById(main.id) || main;
+        e.preventDefault();
+        if (!target.hasAttribute('tabindex')) {
+          target.setAttribute('tabindex', '-1');
+          target.setAttribute('data-ada-skip-target', '');
+          var release = function () {
+            target.removeEventListener('blur', release);
+            if (target.hasAttribute('data-ada-skip-target')) { target.removeAttribute('data-ada-skip-target'); target.removeAttribute('tabindex'); }
+          };
+          target.addEventListener('blur', release);
+        }
+        target.focus();
+      });
+    }
+    if (d.body.firstElementChild !== a) d.body.insertBefore(a, d.body.firstChild);
+  }
+
+  // ADA fix (best practice; related WCAG 1.3.1) - A10: the header containers become the banner landmark and the
+  // footer container the contentinfo landmark (only one header variant is displayed at a time; hidden variants are
+  // not exposed). Navigation landmarks are named in setupNav().
+  function landmarks() {
+    var outside = '[role="banner"], header, [role="main"], main, [role="contentinfo"], footer';
+    var heads = all('.dmHeaderContainer, .hamburger-header-container');
+    if (!heads.length) heads = all('#hcontainer, .hamburger-header');
+    heads.forEach(function (h) {
+      if (h.parentElement && h.parentElement.closest(outside)) return;
+      setAttr(h, 'role', 'banner');
+    });
+    all('.dmFooterContainer').forEach(function (f) {
+      if (f.parentElement && f.parentElement.closest(outside)) return;
+      setAttr(f, 'role', 'contentinfo');
+    });
+  }
+
+  // ---------------------------------------------------------------- C5: navigation
+  function barOf(nav) { return child(nav, 'UL') || nav.querySelector('ul'); }
+  function topLinks(nav) { return children(barOf(nav), 'LI').map(function (li) { return child(li, 'A'); }).filter(Boolean); }
+  function parentItems(nav) { return all('li', nav).filter(function (li) { return child(li, 'UL') && child(li, 'A'); }); }
+  function topItemOf(nav, el) {
+    var bar = barOf(nav);
+    for (var li = el.closest('li'); li; li = li.parentElement.closest('li')) if (li.parentElement === bar) return li;
+    return null;
+  }
+  // Keys that Duda's menu-bar script handles; they are kept away from navigations that are not menu bars.
+  var MENU_KEYS = /^(ArrowLeft|ArrowRight|ArrowUp|ArrowDown|Home|End|Escape| )$/;
+
+  // ADA fix (best practice; related WCAG 1.3.1, 4.1.2) - A1: plain list semantics (no menubar/menu/menuitem roles).
+  function plainList(nav) {
+    all('[role="menubar"], [role="menu"], [role="menuitem"], [role="none"], [role="presentation"]', nav).forEach(function (el) { rmAttr(el, 'role'); });
+    all('li[aria-haspopup], li[aria-expanded]', nav).forEach(function (li) { rmAttr(li, 'aria-haspopup'); rmAttr(li, 'aria-expanded'); });
+  }
+
+  function setupNav(nav) {
+    var kind = nav.closest('.layout-drawer, .hamburger-drawer') ? 'disclosure' : (nav.querySelector('.unifiednav__container_sub-nav') ? 'menubar' : 'list');
+    // ADA fix (best practice) - A10: each navigation landmark has a unique name ("Main", "Mobile", "Footer").
+    var label = kind === 'menubar' ? 'Main' : kind === 'disclosure' ? 'Mobile' : (nav.closest('.dmFooterContainer') ? 'Footer' : '');
+    if (label && !nav.hasAttribute('aria-label') && !nav.hasAttribute('aria-labelledby')) nav.setAttribute('aria-label', label);
+    // ADA fix (best practice; related WCAG 4.1.2) - A10, battery fix 2 R4 (QualWeb qw-act-r48): Duda writes alt="" on the
+    // vertical menus (footer "Links" nav and the phone drawer nav). alt is not valid on <nav> and an empty alt marks an
+    // element as decorative, which contradicts the named navigation landmark; the attribute is removed.
+    rmAttr(nav, 'alt');
+    setAttr(nav, 'data-ada-nav', kind);
+    if (kind === 'menubar') setupMenubar(nav);
+    else if (kind === 'disclosure') setupDisclosure(nav);
+    else setupList(nav);
+  }
+
+  // ---- C5 header: ARIA menu bar completed on top of Duda's keyboard script.
+  // ADA fix (WCAG 4.1.2 related; best practice) - A1: role=menuitem, aria-haspopup and aria-expanded move from the list
+  // items to the links that receive focus (li role=none, as in the W3C menu bar pattern); each submenu is role=menu
+  // named after its parent item.
+  function menuRoles(ul, isTop) {
+    children(ul, 'LI').forEach(function (li) {
+      setAttr(li, 'role', 'none');
+      rmAttr(li, 'aria-haspopup');
+      rmAttr(li, 'aria-expanded');
+      var a = child(li, 'A');
+      if (!a) return;
+      setAttr(a, 'role', 'menuitem');
+      if (!isTop) setAttr(a, 'tabindex', '-1');
+      var sub = child(li, 'UL');
+      if (sub) {
+        setAttr(a, 'aria-haspopup', 'true');
+        if (!a.hasAttribute('aria-expanded')) a.setAttribute('aria-expanded', 'false');
+        setAttr(sub, 'role', 'menu');
+        setAttr(sub, 'aria-label', visibleText(a) || 'Submenu');
+        menuRoles(sub, false);
+      }
+    });
+  }
+
+  // ADA fix (WCAG 4.1.2 related; best practice) - A1: roving tabindex = one Tab stop for the whole menu bar
+  // (the last item used, the first item by default); submenu items are reached with the arrow keys.
+  function rove(nav, current) {
+    var tops = topLinks(nav);
+    if (!tops.length) return;
+    if (current) nav.adaCurrent = current;
+    if (!nav.adaCurrent || tops.indexOf(nav.adaCurrent) < 0) nav.adaCurrent = tops[0];
+    tops.forEach(function (a) { setAttr(a, 'tabindex', a === nav.adaCurrent ? '0' : '-1'); });
+    all('.unifiednav__container_sub-nav a', nav).forEach(function (a) { setAttr(a, 'tabindex', '-1'); });
+  }
+
+  // ADA fix (WCAG 4.1.2 related; WCAG 1.4.13) - A1, F1: aria-expanded on the focusable link follows what is shown:
+  // opened by Duda's keyboard script (inline opacity), by a click or tap (classes) or by the pointer (hover).
+  // The class ada-open drives the CSS that hides collapsed submenus from assistive technology.
+  function syncMenubar(nav) {
+    parentItems(nav).forEach(function (li) {
+      var a = child(li, 'A'), ul = child(li, 'UL');
+      var open = ul.style.opacity === '1' || li.classList.contains('hover') || li.classList.contains('unifiednav__item-wrap_open') ||
+        !!li.adaPre || (!!li.adaHover && !li.classList.contains('ada-dismissed'));
+      setClass(li, 'ada-open', open);
+      setAttr(a, 'aria-expanded', open ? 'true' : 'false');
+    });
+    rove(nav);
+  }
+
+  // Closes a submenu the way Duda's own script does (inline styles and classes). If the pointer is still on it, it
+  // stays dismissed until the pointer leaves (WCAG 1.4.13 - F1).
+  function closeSub(nav, li, keepHover) {
+    var ul = child(li, 'UL');
+    if (ul) { ul.style.removeProperty('opacity'); ul.style.removeProperty('max-height'); }
+    li.classList.remove('hover');
+    li.classList.remove('unifiednav__item-wrap_open');
+    li.adaPre = false;
+    if (!keepHover && (li.adaHover || li.matches(':hover'))) li.classList.add('ada-dismissed');
+    syncMenubar(nav);
+  }
+  // ADA fix (WCAG 1.4.13) - F1, review fix RF-2: Escape inside the menu bar also dismisses every OTHER submenu that is
+  // shown (for example one opened by the pointer resting on another item), not only the submenu of the focused item.
+  // Submenus that contain the element keeping focus stay open.
+  function dismissOthers(nav, keep) {
+    parentItems(nav).forEach(function (li) { if (li.classList.contains('ada-open') && !li.contains(keep)) closeSub(nav, li); });
+  }
+  function closeAll(nav, keepHover) {
+    parentItems(nav).forEach(function (li) {
+      var ul = child(li, 'UL');
+      if (ul.style.opacity === '1' || li.classList.contains('hover') || li.classList.contains('unifiednav__item-wrap_open')) closeSub(nav, li, keepHover);
+    });
+  }
+  // Duda moves focus into a submenu before it makes it visible; the submenu is made visible first so that this works.
+  function preOpen(nav, li) {
+    li.classList.remove('ada-dismissed');
+    li.adaPre = true;
+    li.classList.add('ada-open');
+    setTimeout(function () { li.adaPre = false; syncMenubar(nav); }, 0);
+  }
+  function focusFrom(list, from, step) {
+    var n = list.length;
+    for (var k = 1; k <= n; k++) {
+      var el = list[(((from + step * k) % n) + n) % n];
+      if (shown(el)) { el.focus(); return el; }
+    }
+    return null;
+  }
+
+  // ADA fix (WCAG 4.1.2 related; WCAG 2.1.1, 1.4.13) - A1, F1: keys Duda does not handle, or handles from a stale
+  // position: Left/Right (from the item that has focus), Home/End, Up/Down/Home/End inside a submenu, and Escape
+  // (closes the open submenu and returns focus to its parent item). Enter, Space, Down/Up on a top item and Tab
+  // remain Duda's (open a submenu / activate a link / leave the menu bar).
+  function onMenubarKey(e) {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    var nav = this, key = keyOf(e);
+    var a = e.target && e.target.closest ? e.target.closest('a') : null;
+    if (!a || !nav.contains(a)) return;
+    var tops = topLinks(nav), i = tops.indexOf(a);
+    if (i >= 0) {
+      var li = a.parentElement, sub = child(li, 'UL');
+      if (key === 'ArrowRight' || key === 'ArrowLeft') { stop(e); closeAll(nav, true); rove(nav, focusFrom(tops, i, key === 'ArrowRight' ? 1 : -1)); }
+      else if (key === 'Home') { stop(e); closeAll(nav, true); rove(nav, focusFrom(tops, -1, 1)); }
+      else if (key === 'End') { stop(e); closeAll(nav, true); rove(nav, focusFrom(tops, tops.length, -1)); }
+      else if (key === 'Escape') { e.stopPropagation(); if (sub && li.classList.contains('ada-open')) closeSub(nav, li); dismissOthers(nav, a); }
+      else if (sub && (key === 'Enter' || key === ' ' || key === 'ArrowDown' || key === 'ArrowUp')) preOpen(nav, li);
+      else if (!sub && (key === 'ArrowDown' || key === 'ArrowUp')) e.preventDefault(); // no page scroll inside the menu bar
+      return;
+    }
+    var menu = a.closest('[role="menu"]');
+    if (!menu || !nav.contains(menu)) return;
+    var items = children(menu, 'LI').map(function (x) { return child(x, 'A'); }).filter(Boolean);
+    var j = items.indexOf(a);
+    if (j < 0) return;
+    var parentLi = menu.parentElement, parentLink = child(parentLi, 'A');
+    var nested = parentLi.parentElement && parentLi.parentElement.getAttribute('role') === 'menu';
+    if (key === 'ArrowDown' || key === 'ArrowUp') { stop(e); focusFrom(items, j, key === 'ArrowDown' ? 1 : -1); }
+    else if (key === 'Home') { stop(e); focusFrom(items, -1, 1); }
+    else if (key === 'End') { stop(e); focusFrom(items, items.length, -1); }
+    else if (key === 'Escape' || (key === 'ArrowLeft' && nested)) { stop(e); closeSub(nav, parentLi); if (key === 'Escape') dismissOthers(nav, parentLink); parentLink.focus(); }
+    else if (key === 'ArrowLeft' || (key === 'ArrowRight' && !child(a.parentElement, 'UL'))) {
+      stop(e);
+      var topLink = child(topItemOf(nav, a), 'A');
+      closeAll(nav, true);
+      rove(nav, focusFrom(tops, tops.indexOf(topLink), key === 'ArrowRight' ? 1 : -1));
+    }
+  }
+
+  // Duda's overflow check (a submenu near the right edge opens to the left) looks for li[role=menuitem]; the same
+  // check is repeated here for the list items that now have role=none.
+  function flip(nav) {
+    all('.unifiednav__container_sub-nav[data-depth]', nav).forEach(function (ul) {
+      var r = ul.parentElement.getBoundingClientRect();
+      if (!(r.width > 0 && r.height > 0)) return;
+      if (ul.adaFlipped) { ul.style.left = ''; ul.style.right = ''; ul.adaFlipped = false; }
+      if (ul.getBoundingClientRect().right - w.innerWidth > 0) {
+        ul.style.left = 'auto';
+        ul.style.right = (ul.getAttribute('data-depth') || '0') === '0' ? '0px' : '100%';
+        ul.adaFlipped = true;
+      }
+    });
+  }
+
+  function setupMenubar(nav) {
+    var bar = barOf(nav);
+    if (!bar) return;
+    setAttr(bar, 'role', 'menubar');
+    if (!bar.hasAttribute('aria-label') && !bar.hasAttribute('aria-labelledby')) bar.setAttribute('aria-label', nav.getAttribute('aria-label') || 'Main');
+    menuRoles(bar, true);
+    if (!nav.adaBound) {
+      nav.adaBound = true;
+      menubars.push(nav);
+      nav.addEventListener('keydown', onMenubarKey, true);
+      nav.addEventListener('focusin', function (e) {
+        var a = e.target.closest && e.target.closest('a');
+        var top = a && topItemOf(nav, a);
+        if (top) rove(nav, child(top, 'A'));
+      });
+      // ADA fix (WCAG 1.4.13) - F1: a submenu opened from the keyboard closes when focus leaves the menu bar.
+      nav.addEventListener('focusout', function () {
+        setTimeout(function () { if (!nav.contains(d.activeElement)) closeAll(nav, true); }, 0);
+      });
+      parentItems(nav).forEach(function (li) {
+        li.addEventListener('mouseenter', function () { li.adaHover = true; syncMenubar(nav); });
+        li.addEventListener('mouseleave', function () { li.adaHover = false; li.classList.remove('ada-dismissed'); syncMenubar(nav); });
+      });
+      if (w.MutationObserver) {
+        // Watches only this navigation's class/style/tabindex attributes (Duda's open/close and tabindex changes).
+        var mo = new w.MutationObserver(function () { syncMenubar(nav); mo.takeRecords(); });
+        mo.observe(nav, { attributes: true, subtree: true, attributeFilter: ['class', 'style', 'tabindex'] });
+      }
+    }
+    syncMenubar(nav);
+  }
+
+  // ---- C5 phone drawer (and the desktop drawer used in narrow windows): disclosure navigation.
+  // ADA fix (WCAG 4.1.2 related; best practice) - A1: the vertical drawer menu is a plain list; each item that opens a
+  // submenu is a button with aria-expanded and aria-controls (W3C disclosure navigation pattern); collapsed submenus
+  // are hidden from assistive technology (CSS) and the links of an open submenu are in the tab order.
+  function syncDisclosure(nav) {
+    parentItems(nav).forEach(function (li) {
+      var a = child(li, 'A'), ul = child(li, 'UL');
+      var open = li.classList.contains('unifiednav__item-wrap_open') || ul.style.maxHeight === 'initial' || ul.style.opacity === '1';
+      setClass(li, 'ada-open', open);
+      setAttr(a, 'aria-expanded', open ? 'true' : 'false');
+      all('a', ul).forEach(function (x) { setAttr(x, 'tabindex', open ? '0' : '-1'); });
+    });
+  }
+  function setupDisclosure(nav) {
+    plainList(nav);
+    parentItems(nav).forEach(function (li) {
+      var a = child(li, 'A'), ul = child(li, 'UL');
+      if (!ul.id) ul.id = 'ada-sub-' + (++uid);
+      setAttr(a, 'role', 'button');
+      setAttr(a, 'aria-controls', ul.id);
+      if (!a.hasAttribute('aria-expanded')) a.setAttribute('aria-expanded', 'false');
+    });
+    if (!nav.adaBound) {
+      nav.adaBound = true;
+      // Enter and Space toggle the submenu through Duda's own click handler (the same as a tap) and keep focus on the
+      // button; Duda's menu-bar keys do not apply to this list. Escape still closes the drawer (Duda, on keyup).
+      nav.addEventListener('keydown', function (e) {
+        if (e.altKey || e.ctrlKey || e.metaKey) return;
+        var key = keyOf(e), a = e.target.closest && e.target.closest('a');
+        if (!a || !nav.contains(a)) return;
+        if ((key === 'Enter' || key === ' ') && a.getAttribute('role') === 'button') { stop(e); a.click(); }
+        else if (key === 'Enter' || MENU_KEYS.test(key)) e.stopPropagation();
+      }, true);
+      if (w.MutationObserver) {
+        var mo = new w.MutationObserver(function () { syncDisclosure(nav); mo.takeRecords(); });
+        mo.observe(nav, { attributes: true, subtree: true, attributeFilter: ['class', 'style', 'tabindex'] });
+      }
+    }
+    syncDisclosure(nav);
+  }
+
+  // ---- C5 footer "Links": plain list.
+  // ADA fix (best practice; related WCAG 1.3.1) - A1: the footer links are not a menu bar; the menubar/menuitem roles
+  // are removed and Duda's arrow-key/Escape focus moves are not applied to this list.
+  function setupList(nav) {
+    plainList(nav);
+    if (!nav.adaBound) {
+      nav.adaBound = true;
+      nav.addEventListener('keydown', function (e) { if (MENU_KEYS.test(keyOf(e))) e.stopPropagation(); }, true);
+    }
+  }
+
+  function navigation() {
+    all('.unifiednav').forEach(setupNav);
+    menubars.forEach(flip);
+  }
+
+  // ADA fix (WCAG 1.4.13) - F1: Escape also dismisses a submenu shown by hover while focus is elsewhere on the page.
+  function onDocumentKey(e) {
+    var key = keyOf(e);
+    if (key === 'Tab') lastTabBack = e.shiftKey;
+    if (key !== 'Escape') return;
+    menubars.forEach(function (nav) {
+      if (nav.contains(e.target)) return; // handled by the menu bar itself
+      parentItems(nav).forEach(function (li) { if (li.classList.contains('ada-open')) closeSub(nav, li); });
+    });
+  }
+
+  // ADA fix (WCAG 2.4.3, 2.4.11) - C5: while the phone menu drawer is open, focus stays in the drawer and its menu
+  // button (Duda's own trap misses some cases, e.g. the second Tab after the first opening), so focus is never left
+  // on content hidden behind the drawer. Escape closing the drawer and returning focus to the button is Duda's.
+  function openDrawer() {
+    var btns = all('.layout-drawer-hamburger[aria-controls]');
+    for (var i = 0; i < btns.length; i++) {
+      var dr = d.getElementById(btns[i].getAttribute('aria-controls'));
+      if (dr && dr.getAttribute('aria-hidden') === 'false' && !dr.hasAttribute('inert') && shown(btns[i])) return { btn: btns[i], drawer: dr };
+    }
+    return null;
+  }
+  function onFocusIn(e) {
+    var t = e.target;
+    if (!t || t === w || t === d) return;
+    var st = openDrawer();
+    if (!st || t === st.btn || st.drawer.contains(t)) return;
+    var list = [st.btn].concat(focusables(st.drawer));
+    var from = list.indexOf(e.relatedTarget);
+    var next = from < 0 ? st.btn : list[(from + (lastTabBack ? -1 : 1) + list.length) % list.length];
+    if (next && next.focus) next.focus();
+  }
+
+  // ---------------------------------------------------------------- forms: C4, C6, C7, C8
+  function link(href, text) { var a = d.createElement('a'); a.href = href; a.textContent = text; return a; }
+  function autocompleteFor(field, name) {
+    var type = (field.getAttribute('type') || 'text').toLowerCase();
+    if (field.nodeName !== 'INPUT') return '';
+    if (type === 'email') return 'email';
+    if (type === 'tel') return 'tel';
+    if (type === 'text' && /^(full\s+)?name$/i.test(name || field.getAttribute('aria-label') || field.getAttribute('placeholder') || '')) return 'name';
+    return '';
+  }
+  function forms() {
+    all('.dmform').forEach(function (widget) {
+      var form = widget.querySelector('form');
+      if (!form) return;
+      var anyRequired = false;
+      all('.dmforminput', form).forEach(function (row) {
+        if (row.classList.contains('g-recaptcha') || row.classList.contains('m-recaptcha')) return;
+        var field = row.querySelector('input:not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]), textarea:not(.g-recaptcha-response), select');
+        if (!field) return;
+        var label = row.querySelector('label');
+        var name = label ? squash(label.textContent).replace(/[\s:*]+$/, '') : '';
+        // ADA fix (WCAG 3.3.2 related; WCAG 2.5.3) - A13: the accessible name is the visible label (the CSS shows
+        // Duda's hidden labels); the placeholder stays as a hint.
+        if (name) setAttr(field, 'aria-label', name);
+        // ADA fix (WCAG 3.3.2) - F4: required fields are identified programmatically (the visible "*" is CSS).
+        if (row.classList.contains('required')) { setAttr(field, 'aria-required', 'true'); anyRequired = true; }
+        // ADA fix (WCAG 1.3.5) - F5: input purpose of the fields for the user's name, email address and phone number.
+        var ac = autocompleteFor(field, name), cur = field.getAttribute('autocomplete');
+        if (ac && (!cur || /^(on|off)$/i.test(cur))) field.setAttribute('autocomplete', ac);
+      });
+      // ADA fix (WCAG 3.3.2) - F4: instruction at the top of the form that explains the asterisk.
+      if (anyRequired && !widget.querySelector('.ada-form-note')) {
+        var note = d.createElement('p');
+        note.className = 'ada-form-note';
+        note.textContent = '* indicates a required field';
+        form.parentNode.insertBefore(note, form);
+      }
+      // ADA fix (WCAG 2.4.11) - F9: the reCAPTCHA badge is hidden by the CSS (it covered the last footer link), so
+      // Google's required notice is shown under the form instead.
+      if ((widget.getAttribute('captcha') === 'true' || widget.querySelector('.g-recaptcha')) && !widget.querySelector('.ada-recaptcha-note')) {
+        var p = d.createElement('p');
+        p.className = 'ada-recaptcha-note';
+        p.appendChild(d.createTextNode('This site is protected by reCAPTCHA and the Google '));
+        p.appendChild(link('https://policies.google.com/privacy', 'Privacy Policy'));
+        p.appendChild(d.createTextNode(' and '));
+        p.appendChild(link('https://policies.google.com/terms', 'Terms of Service'));
+        p.appendChild(d.createTextNode(' apply.'));
+        form.parentNode.insertBefore(p, form.nextSibling);
+      }
+      // ADA fix (WCAG 4.1.3) - open item: the success and error messages Duda shows after sending are announced.
+      all('.dmform-success', widget).forEach(function (m) { setAttr(m, 'role', 'status'); setAttr(m, 'aria-live', 'polite'); setAttr(m, 'aria-atomic', 'true'); liveMessage(m); });
+      all('.dmform-error', widget).forEach(function (m) { setAttr(m, 'role', 'alert'); setAttr(m, 'aria-live', 'assertive'); setAttr(m, 'aria-atomic', 'true'); liveMessage(m); });
+    });
+  }
+
+  // ADA fix (WCAG 4.1.3) - open item (C8), review fix RF-3 (ada-audit AA-2): Duda keeps the message text inside the hidden
+  // message and only switches display:none -> block, and a role=status region that only becomes visible is not reliably
+  // announced. While a message is hidden its content is kept aside (the region is empty); when Duda shows it, the
+  // now-visible empty live region receives the same content 150 ms later, which screen readers announce as new content.
+  // The text, its markup and the look are Duda's own; nothing is shown while the message is hidden, as before.
+  var LIVE_DELAY = 150;
+  function liveMessage(m) {
+    if (m.adaLive) return;
+    m.adaLive = true;
+    var stash = null, timer = 0, visible = null;
+    var keep = function () { if (!m.firstChild) return; if (!stash) stash = d.createDocumentFragment(); while (m.firstChild) stash.appendChild(m.firstChild); };
+    var sync = function () {
+      var now = shown(m);
+      if (now === visible) return;
+      visible = now;
+      clearTimeout(timer);
+      timer = 0;
+      if (!now) { keep(); setAttr(m, 'data-ada-live', 'waiting'); return; }
+      keep(); // content Duda wrote while the message was hidden or just before showing it
+      setAttr(m, 'data-ada-live', 'shown');
+      timer = setTimeout(function () {
+        timer = 0;
+        if (stash && shown(m)) { m.appendChild(stash); stash = null; }
+      }, LIVE_DELAY);
+    };
+    sync();
+    if (w.MutationObserver) new w.MutationObserver(function () { attempt('C8 live message', sync); }).observe(m, { attributes: true, attributeFilter: ['style', 'class', 'hidden'] });
+  }
+
+  // ---------------------------------------------------------------- C9, C10, C11: links and icons
+  function formatPhone(href) {
+    var raw = (href || '').replace(/^tel:/i, '');
+    try { raw = decodeURIComponent(raw); } catch (err) { /* keep the raw number */ }
+    var digits = raw.replace(/\D/g, '');
+    if (digits.length === 11 && digits.charAt(0) === '1') digits = digits.slice(1);
+    return digits.length === 10 ? '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6) : raw;
+  }
+  function hideIcon(svg) {
+    setAttr(svg, 'aria-hidden', 'true');
+    rmAttr(svg, 'aria-labelledby');
+    rmAttr(svg, 'aria-label');
+    rmAttr(svg, 'role');
+  }
+  // ADA fix (best practice; related WCAG 1.1.1, 2.4.4) - A7: the phone-layout call link (an icon only) is named by its
+  // action and number, its icon is hidden from assistive technology and it no longer opens a new window (C9).
+  function callLinks() {
+    all('a[href^="tel:"], a[href^="TEL:"]').forEach(function (a) {
+      if (visibleText(a) || !a.querySelector('svg, img, .icon')) return;
+      setAttr(a, 'aria-label', 'Call ' + formatPhone(a.getAttribute('href')));
+      setAttr(a, 'data-ada-call', '');
+      all('svg', a).forEach(hideIcon);
+      // ADA fix (WCAG 2.5.3 related; best practice) - A7 (C11), battery fix N1: the hidden icon's <title>Phone Icon</title>
+      // is removed, so no tool or browser tooltip offers "Phone Icon" as the visible label of a link named "Call ...".
+      all('svg title', a).forEach(function (t) { t.parentNode.removeChild(t); });
+    });
+  }
+  function capitalize(label) { return label === label.toLowerCase() ? label.charAt(0).toUpperCase() + label.slice(1) : label; }
+  // ADA fix (best practice; advisory technique G201) - A2, A4: tel: links never open a new window; every other link
+  // that opens one says so in its name: visible text + visually hidden " (opens in a new window)", or the aria-label
+  // of an icon-only link ("Facebook (opens in a new window)").
+  function newWindowLinks() {
+    all('a[target]').forEach(function (a) {
+      var href = a.getAttribute('href') || '', target = (a.getAttribute('target') || '').toLowerCase();
+      if (/^tel:/i.test(href) || a.classList.contains('dmCall')) { a.removeAttribute('target'); return; }
+      if (!target || /^_(self|top|parent)$/.test(target) || a.hasAttribute('data-ada-newwin')) return;
+      var label = a.getAttribute('aria-label');
+      if (label) setAttr(a, 'aria-label', capitalize(squash(label)) + NEW_WINDOW);
+      else if (visibleText(a) || a.querySelector('img[alt]:not([alt=""])')) {
+        var s = d.createElement('span');
+        s.className = 'ada-sr-only';
+        s.textContent = NEW_WINDOW;
+        a.appendChild(s);
+      } else return;
+      a.setAttribute('data-ada-newwin', '');
+    });
+  }
+  // ADA fix (best practice; related WCAG 1.1.1) - A5: decorative SVG icons are hidden from assistive technology and
+  // their titles are no longer used as names: icons inside links/buttons named by text or aria-label, the graphic
+  // icons of the shared header/footer (store, restaurant, phone, location pin) and icons titled "... icon".
+  function icons() {
+    all('svg').forEach(function (svg) {
+      if (svg.getAttribute('aria-hidden') === 'true') return;
+      var host = svg.parentElement && svg.parentElement.closest('a, button, [role="button"], [role="link"]');
+      if (host) {
+        if (host.getAttribute('aria-label') || host.getAttribute('aria-labelledby') || visibleText(host)) hideIcon(svg);
+        return;
+      }
+      var title = svg.querySelector('title');
+      var inGlobal = svg.closest('.graphicWidget') && svg.closest('.dmFooterContainer, .dmHeaderContainer, .hamburger-header-container');
+      if (inGlobal || /\bicon$/i.test(title ? squash(title.textContent) : '')) hideIcon(svg);
+    });
+  }
+
+  // ---------------------------------------------------------------- C13: spacer paragraphs
+  // ADA fix (best practice) - A12: empty paragraphs used as spacers are hidden from screen readers (no "blank");
+  // the layout does not change. Editor alternative: delete them and use the section spacing in Duda.
+  function spacerParagraphs() {
+    all('p').forEach(function (p) {
+      var empty = !squash(p.textContent) && !p.querySelector('img, svg, iframe, video, audio, canvas, object, embed, picture, input, select, textarea, button, a');
+      if (p.hasAttribute('data-ada-spacer')) {
+        if (!empty) { p.removeAttribute('data-ada-spacer'); rmAttr(p, 'aria-hidden'); }
+        return;
+      }
+      if (!empty || p.hasAttribute('aria-hidden') || p.closest('form, [role="status"], [role="alert"], [aria-live], .dmform-success, .dmform-error')) return;
+      p.setAttribute('aria-hidden', 'true');
+      p.setAttribute('data-ada-spacer', '');
+    });
+  }
+
+  // ---------------------------------------------------------------- Duda popup close control
+  // ADA fix (WCAG 4.1.2) - battery fix 2 R2 (IBM aria_eventhandler_role_valid; not an Exhibit B item): Duda's shared
+  // popup (#dmPopup, used for share dialogs and popup pages; nothing on this site opens one today) closes with a
+  // <div onclick> that has no role and no name, and Duda makes it focusable (tabindex=0) while a popup is open. It
+  // becomes a "Close" button that also works with Enter and Space (keydown listener in start()). While no popup is
+  // shown, the empty transparent popup is hidden from assistive technology (aria-hidden), so that button is never
+  // announced on its own; it is exposed again as soon as Duda shows a popup (class dmPopup--visible).
+  function syncPopup(popup) {
+    if (popup.classList.contains('dmPopup--visible')) {
+      if (popup.hasAttribute('data-ada-hidden')) { popup.removeAttribute('data-ada-hidden'); rmAttr(popup, 'aria-hidden'); }
+    } else if (!popup.hasAttribute('aria-hidden')) {
+      popup.setAttribute('aria-hidden', 'true');
+      popup.setAttribute('data-ada-hidden', '');
+    }
+  }
+  function popupClose() {
+    var popup = d.getElementById('dmPopup');
+    if (!popup) return;
+    all('.dmPopupClose', popup).forEach(function (c) {
+      setAttr(c, 'role', 'button');
+      if (!c.hasAttribute('aria-label') && !c.hasAttribute('aria-labelledby')) c.setAttribute('aria-label', 'Close');
+    });
+    syncPopup(popup);
+    if (!popup.adaObserved && w.MutationObserver) {
+      popup.adaObserved = true;
+      new w.MutationObserver(function () { attempt('R2 popup state', function () { syncPopup(popup); }); }).observe(popup, { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+
+  // ---------------------------------------------------------------- Duda gallery viewer and phone drawer (hidden states)
+  // ADA fix (WCAG 4.1.2) - review fix RF-4 (ada-audit R1; Alfa sia-r17): Duda's PhotoSwipe gallery viewer (.pswp) is
+  // display:none and aria-hidden="true" while closed, but its six toolbar buttons (Close, Share, Fullscreen, Zoom,
+  // Previous, Next) stay focusable, which tools report as focusable content hidden from assistive technology. While the
+  // viewer is closed those buttons are disabled (marked data-ada-pswp-off; any other focusable gets tabindex="-1"), and as
+  // soon as PhotoSwipe opens it (class pswp--open) they are restored exactly as they were. PhotoSwipe's own aria-hidden
+  // and the viewer's tabindex (used to focus it) are not changed. (Earlier v1.1.0 drafts removed the redundant
+  // aria-hidden, or set tabindex="-1" on the buttons; ada-audit still reported both, so the buttons are now disabled.)
+  var PSWP_FOCUSABLE = 'button, a[href], input, select, textarea, [tabindex]';
+  function photoSwipe() {
+    all('.pswp').forEach(function (ps) {
+      var sync = function () {
+        var open = ps.classList.contains('pswp--open');
+        all(PSWP_FOCUSABLE, ps).forEach(function (el) {
+          var isButton = el.nodeName === 'BUTTON';
+          if (!open && !el.hasAttribute('data-ada-pswp-off')) {
+            if (isButton) { if (el.disabled) return; el.setAttribute('data-ada-pswp-off', 'disabled'); el.disabled = true; }
+            else { el.setAttribute('data-ada-pswp-off', 'tabindex:' + (el.getAttribute('tabindex') || '')); el.setAttribute('tabindex', '-1'); }
+          } else if (open && el.hasAttribute('data-ada-pswp-off')) {
+            var old = el.getAttribute('data-ada-pswp-off');
+            el.removeAttribute('data-ada-pswp-off');
+            if (old === 'disabled') el.disabled = false;
+            else { old = old.slice(8); if (old) el.setAttribute('tabindex', old); else el.removeAttribute('tabindex'); }
+          }
+        });
+        setAttr(ps, 'data-ada-pswp', open ? 'open' : 'closed');
+      };
+      sync();
+      if (!ps.adaObserved && w.MutationObserver) {
+        ps.adaObserved = true;
+        new w.MutationObserver(function () { attempt('R1 gallery viewer', sync); }).observe(ps, { attributes: true, attributeFilter: ['class'] });
+      }
+    });
+  }
+
+  // ADA fix (WCAG 1.3.1 related; best practice) - review fix RF-5 (ada-audit R3): the closed phone menu drawer is
+  // aria-hidden, inert and moved off screen with a transform, but stayed visibility:visible, so tools that do not resolve
+  // the transform read its links as visible text hidden from screen readers. Once the closing slide has finished
+  // (Duda's transition is 0.3 s) the closed drawer also gets visibility:hidden (CSS class ada-drawer-closed); the class is
+  // removed before Duda opens it (capture-phase click on its menu button) and whenever Duda marks it open.
+  var DRAWER_DELAY = 400;
+  function drawers() {
+    all('.layout-drawer, .hamburger-drawer').forEach(function (dr) {
+      if (dr.adaDrawer) return;
+      dr.adaDrawer = true;
+      var timer = 0;
+      var closed = function () { return dr.getAttribute('aria-hidden') === 'true' && !dr.hasAttribute('open'); };
+      var sync = function (initial) {
+        clearTimeout(timer);
+        timer = 0;
+        if (!closed()) { setClass(dr, 'ada-drawer-closed', false); return; }
+        if (initial === true) setClass(dr, 'ada-drawer-closed', true);
+        else timer = setTimeout(function () { timer = 0; if (closed()) setClass(dr, 'ada-drawer-closed', true); }, DRAWER_DELAY);
+      };
+      sync(true);
+      if (w.MutationObserver) new w.MutationObserver(function () { attempt('R3 drawer', sync); }).observe(dr, { attributes: true, attributeFilter: ['aria-hidden', 'open'] });
+    });
+  }
+  function openingDrawer(e) {
+    var b = e.target && e.target.closest ? e.target.closest('.layout-drawer-hamburger') : null;
+    var dr = b && d.getElementById(b.getAttribute('aria-controls') || '');
+    if (dr) dr.classList.remove('ada-drawer-closed');
+  }
+
+  // ---------------------------------------------------------------- C14: reCAPTCHA loaded on first use of the form
+  // ADA fix (WCAG 4.1.2, 2.4.7; related 2.4.11) - C14 (v1.2.0, client directive "100 in every tool"; related A14, F9):
+  // Duda's runtime loads Google's reCAPTCHA (https://www.google.com/recaptcha/api.js?onload=onCaptchaLoad&render=explicit,
+  // through $.DM.loadExternalScriptAsync) as soon as the contact form scrolls into view, so Google's hidden challenge frame
+  // (bframe: focusable image tiles inside aria-hidden content, no focus indicator, unnamed dialog) sat in every page
+  // whether or not the visitor ever used the form. That one script URL is now requested when the visitor first interacts
+  // with a Duda form (pointer press, typing or a key press inside it; see onFormInteraction). Nothing else changes: Duda's own onCaptchaLoad -> initFormCaptcha
+  // still renders the invisible reCAPTCHA, and every submission still goes through grecaptcha.execute -> Duda's
+  // actualSubmitForm. A submission made before Google's script is ready is validated by Duda at once (errors appear as
+  // before) and, when valid, waits for reCAPTCHA and then runs Google's check exactly as Duda does (reset + execute of
+  // the form's captcha id); it is never sent without reCAPTCHA. If Google's script cannot load, the form cannot be sent,
+  // as today. Google's widget itself is unchanged once loaded. Only invisible-reCAPTCHA forms are handled (this site);
+  // a checkbox reCAPTCHA keeps Duda's behavior. Google's notice under the form (C4) is shown from the start.
+  var RECAPTCHA_URL = /^https:\/\/www\.google\.com\/recaptcha\/(api|enterprise)\.js\?/;
+  var CAPTCHA_WAIT = 30000;
+  var rc = api.recaptcha = { state: 'idle', deferred: 0, held: 0, executed: 0 };
+  var rcPending = [];
+  function captchaForms() { return all('.dmform[captcha="true"]'); }
+  function invisibleCaptcha(widget) {
+    var pos = widget.getAttribute('data-captcha-position');
+    return !!pos && pos !== 'checkbox';
+  }
+  function lazyCaptchaApplies() {
+    var forms = captchaForms();
+    return forms.length > 0 && forms.every(invisibleCaptcha);
+  }
+  function captchaReady(widget) {
+    var g = w.grecaptcha;
+    return !!(g && typeof g.execute === 'function' && typeof g.reset === 'function' && widget.hasAttribute('captcha-id'));
+  }
+  function releaseCaptcha() {
+    if (rc.state === 'released' || rc.state === 'passthrough') return;
+    rc.state = 'released';
+    rc.releasedAt = Date.now();
+    var run = rcPending;
+    rcPending = [];
+    run.forEach(function (f) { f(); });
+  }
+  function lazyRecaptcha() {
+    var jq = w.jQuery;
+    var dm = jq && jq.DM;
+    if (!dm || typeof dm.loadExternalScriptAsync !== 'function' || dm.loadExternalScriptAsync.adaLazy || !jq.Deferred) return;
+    if (rc.state === 'idle' && !lazyCaptchaApplies()) { if (!captchaForms().length) return; rc.state = 'passthrough'; return; }
+    if (rc.state === 'idle') rc.state = 'waiting';
+    var original = dm.loadExternalScriptAsync;
+    var wrapped = function (url) {
+      if (typeof url !== 'string' || !RECAPTCHA_URL.test(url) || rc.state !== 'waiting') return original.apply(this, arguments);
+      var self = this, args = arguments, def = jq.Deferred();
+      rc.deferred++;
+      rcPending.push(function () {
+        attempt('C14 recaptcha load', function () {
+          var p = original.apply(self, args);
+          if (p && typeof p.then === 'function') p.then(function () { rc.loaded = true; def.resolve(); }, function () { rc.failed = true; def.reject(); });
+          else def.resolve();
+        });
+      });
+      return def.promise();
+    };
+    wrapped.adaLazy = true;
+    wrapped.adaOriginal = original;
+    dm.loadExternalScriptAsync = wrapped;
+  }
+  // What counts as using the form: a pointer press or a tap in it, typing or pasting in it (input/change), or a key press in
+  // it other than the keys that only move through the page (Tab, Shift, arrows...), so a keyboard user who tabs past the
+  // form does not download Google's script; Enter on "Send Message" and any submission release it too (onCaptchaSubmit).
+  var PASS_KEYS = /^(Tab|Shift|Control|Alt|Meta|CapsLock|Escape|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|PageUp|PageDown|Home|End|ContextMenu|Unidentified)$/;
+  function onFormInteraction(e) {
+    if (rc.state !== 'waiting') return;
+    if (e.type === 'keydown' && PASS_KEYS.test(keyOf(e))) return;
+    var t = e.target;
+    if (t && t.closest && t.closest('.dmform')) releaseCaptcha();
+  }
+  // A submission before reCAPTCHA is ready: Duda's own submit handler runs at once (its validation and error messages)
+  // with a stand-in grecaptcha that only records that Google's check is wanted; the real grecaptcha (if any) is put back
+  // in the same synchronous step. When reCAPTCHA is ready, the check runs as Duda runs it.
+  function onCaptchaSubmit(e) {
+    var form = e.target;
+    if (!form || form.nodeName !== 'FORM' || rc.state === 'passthrough' || rc.state === 'idle') return;
+    var widget = form.closest('.dmform[captcha="true"]');
+    if (!widget || !invisibleCaptcha(widget) || captchaReady(widget)) return;
+    var jq = w.jQuery;
+    if (!jq || !jq.fn || !jq.fn.triggerHandler) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    releaseCaptcha();
+    rc.held++;
+    var wanted = false;
+    var had = Object.prototype.hasOwnProperty.call(w, 'grecaptcha'), saved = w.grecaptcha;
+    w.grecaptcha = { reset: function () {}, execute: function () { wanted = true; }, ready: function () {} };
+    try { jq(form).triggerHandler('submit'); } finally { if (had) w.grecaptcha = saved; else { try { delete w.grecaptcha; } catch (err) { w.grecaptcha = undefined; } } }
+    if (!wanted || widget.adaWaiting) return;
+    widget.adaWaiting = true;
+    var started = Date.now();
+    (function check() {
+      if (captchaReady(widget)) {
+        widget.adaWaiting = false;
+        attempt('C14 recaptcha execute', function () {
+          var id = widget.getAttribute('captcha-id');
+          w.grecaptcha.reset(id);
+          w.grecaptcha.execute(id);
+          rc.executed++;
+        });
+        return;
+      }
+      if (rc.failed || Date.now() - started > CAPTCHA_WAIT) { widget.adaWaiting = false; rc.gaveUp = (rc.gaveUp || 0) + 1; return; }
+      setTimeout(check, 100);
+    })();
+  }
+
+  // ---------------------------------------------------------------- C15: Google map loaded on request
+  // ADA fix (WCAG 2.4.11, 2.5.8, 1.1.1, 4.1.2 of the embedded map; best practice) - C15 (v1.2.0, client directive "100 in
+  // every tool"): the /contact-us Google Maps embed (a Duda HTML widget with Google's iframe) loaded with the page, so
+  // every scan included Google's map controls. Until the visitor asks for it, the widget shows the address as text, a real
+  // button "Show interactive map (Google Maps)" and a link "Open in Google Maps (opens in a new window)" to the same
+  // place. The button puts back Google's original iframe (same src, title and attributes) and moves focus to the map
+  // region, which is named "Map of <place>". No picture of Google's map is used. Google's map itself is unchanged once
+  // loaded (its controls were evaluated as conforming in Exhibit B, section 3). The iframe is taken out while the page is
+  // being parsed (observer started by this script in the head), before Google's map is requested.
+  // Editor alternative (CAMBIOS-ADA.md): put the same facade markup in the HTML widget instead of the iframe.
+  var MAP_SRC = /^https:\/\/(www\.)?google\.[a-z.]+\/maps\/embed\?|^https:\/\/maps\.google\.[a-z.]+\/maps\?.*output=embed/i;
+  // Place shown before the map loads: the name of the embed's own place and the address printed on /contact-us
+  // ("Our Location: 5329 South Florida Ave, Lakeland, FL 33813").
+  var MAP_PLACE = { name: 'Anthony\'s Health Hut & Restaurant', street: '5329 South Florida Ave', city: 'Lakeland, FL 33813' };
+  var mapFrames = [];
+  function mapWidgetFrame(el) {
+    return el && el.nodeName === 'IFRAME' && MAP_SRC.test(el.getAttribute('src') || '') && !el.closest('.ada-map') &&
+      !!el.closest('.dmCustomHtml, [data-element-type="html"], .inlineMap, [data-element-type="inlineMap"]');
+  }
+  function placeName(src) {
+    var m = /!2s([^!]+)/.exec(src || '');
+    if (!m) return MAP_PLACE.name;
+    try { return decodeURIComponent(m[1].replace(/\+/g, ' ')); } catch (err) { return MAP_PLACE.name; }
+  }
+  function mapsLink() {
+    var found = d.querySelector('a[href^="https://www.google.com/maps/place/"], a[href^="https://maps.google.com/"], a[href^="https://goo.gl/maps/"], a[href^="https://maps.app.goo.gl/"]');
+    return found ? found.getAttribute('href') : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(MAP_PLACE.name + ', ' + MAP_PLACE.street + ', ' + MAP_PLACE.city);
+  }
+  function mapFacade(frame) {
+    var name = placeName(frame.getAttribute('src'));
+    var box = d.createElement('div');
+    box.className = 'ada-map';
+    box.setAttribute('role', 'region');
+    box.setAttribute('aria-label', 'Map of ' + name);
+    box.setAttribute('data-ada-map', 'facade');
+    var addr = d.createElement('p');
+    addr.className = 'ada-map-address';
+    var strong = d.createElement('strong');
+    strong.textContent = name;
+    addr.appendChild(strong);
+    addr.appendChild(d.createElement('br'));
+    addr.appendChild(d.createTextNode(MAP_PLACE.street));
+    addr.appendChild(d.createElement('br'));
+    addr.appendChild(d.createTextNode(MAP_PLACE.city));
+    var btn = d.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ada-map-show';
+    btn.textContent = 'Show interactive map (Google Maps)';
+    var open = d.createElement('a');
+    open.className = 'ada-map-open';
+    open.target = '_blank';
+    open.rel = 'noopener';
+    open.setAttribute('data-ada-newwin', '');
+    open.textContent = 'Open in Google Maps (opens in a new window)';
+    box.appendChild(addr);
+    box.appendChild(btn);
+    box.appendChild(open);
+    box.adaFrame = frame;
+    btn.addEventListener('click', function () { attempt('C15 map show', function () { showMap(box); }); });
+    return box;
+  }
+  function showMap(box) {
+    var frame = box.adaFrame;
+    if (!frame || box.getAttribute('data-ada-map') === 'loaded') return;
+    var addr = box.querySelector('.ada-map-address'), btn = box.querySelector('.ada-map-show');
+    var height = Math.round(box.getBoundingClientRect().height) || 250;
+    if (addr) box.removeChild(addr);
+    if (btn) box.removeChild(btn);
+    // Google's iframe keeps the height of the widget's box (its own height="100%" no longer resolves once the box grows)
+    frame.style.setProperty('height', height + 'px', 'important');
+    var widget = box.parentElement;
+    if (widget) widget.style.setProperty('height', 'auto', 'important');
+    box.insertBefore(frame, box.firstChild);
+    box.setAttribute('data-ada-map', 'loaded');
+    box.setAttribute('tabindex', '-1');
+    box.focus();
+  }
+  function swapMap(frame) {
+    if (!mapWidgetFrame(frame) || !frame.parentNode) return;
+    var box = mapFacade(frame);
+    frame.parentNode.replaceChild(box, frame);
+    mapFrames.push(box);
+  }
+  function mapLinks() {
+    mapFrames.forEach(function (box) { var a = box.querySelector('a.ada-map-open'); if (a && !a.getAttribute('href')) a.setAttribute('href', mapsLink()); });
+  }
+  function maps() {
+    all('iframe').forEach(swapMap);
+    mapLinks();
+  }
+  // Editor canvas (RF-6): every iframe goes back exactly where it was.
+  function restoreMaps() {
+    mapFrames.forEach(function (box) { if (box.parentNode && box.adaFrame) box.parentNode.replaceChild(box.adaFrame, box); });
+    mapFrames = [];
+  }
+  var earlyMaps = null;
+  if (w.MutationObserver && d.readyState === 'loading') {
+    earlyMaps = new w.MutationObserver(function (records) {
+      for (var i = 0; i < records.length; i++) {
+        var added = records[i].addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          var n = added[j];
+          if (n.nodeType !== 1) continue;
+          if (n.nodeName === 'IFRAME') attempt('C15 map', function () { swapMap(n); });
+          else if (n.getElementsByTagName) Array.prototype.slice.call(n.getElementsByTagName('iframe')).forEach(function (f) { attempt('C15 map', function () { swapMap(f); }); });
+        }
+      }
+    });
+    earlyMaps.observe(d.documentElement, { childList: true, subtree: true });
+  }
+
+  // ---------------------------------------------------------------- Duda editor
+  // ADA fix (best practice) - review fix RF-6: inside the Duda editor canvas the script changes nothing, so the editor
+  // never saves markup added here (screen-reader-only text, aria-hidden spacers, link names) into the site's content.
+  // Duda's own test ($.DM.insideEditor) is false in the editor's Preview, so the fixes still run there; without it, the
+  // editor flags of the page (Parameters.isInEditor, ?nee=, body.bodyInsideNee) are used.
+  function inEditor() {
+    try {
+      var jq = w.jQuery || w.$;
+      var dm = jq && jq.DM;
+      if (dm && typeof dm.insideEditor === 'function') return !!dm.insideEditor();
+      if (w.Parameters && w.Parameters.isInEditor === true) return true;
+      return /[?&]nee=/.test(w.location.search || '') || !!(d.body && d.body.classList.contains('bodyInsideNee'));
+    } catch (err) {
+      return false;
+    }
+  }
+
+  // ---------------------------------------------------------------- run
+  function runAll() {
+    api.runs++;
+    attempt('C12 skip link', skipLink);
+    attempt('C12 landmarks', landmarks);
+    attempt('C5 navigation', navigation);
+    attempt('C4 C6 C7 C8 forms', forms);
+    attempt('C11 call link', callLinks);
+    attempt('C9 new window', newWindowLinks);
+    attempt('C10 icons', icons);
+    attempt('C13 spacers', spacerParagraphs);
+    attempt('R2 popup close', popupClose);
+    attempt('R1 gallery viewer', photoSwipe);
+    attempt('R3 drawer', drawers);
+    attempt('C14 recaptcha', lazyRecaptcha);
+    attempt('C15 map', maps);
+  }
+  api.run = runAll;
+
+  function start() {
+    if (earlyMaps) { earlyMaps.disconnect(); earlyMaps = null; }
+    if (inEditor()) { api.editor = true; attempt('C15 map restore', restoreMaps); return; }
+    runAll();
+    // C14: the first use of a Duda form releases Google's reCAPTCHA script; submissions made before it is
+    // ready wait for it (capture phase, before Duda's own submit handler).
+    ['pointerdown', 'mousedown', 'touchstart', 'keydown', 'input', 'change'].forEach(function (type) {
+      d.addEventListener(type, function (e) { attempt('C14 recaptcha release', function () { onFormInteraction(e); }); }, { capture: true, passive: true });
+    });
+    d.addEventListener('submit', function (e) { attempt('C14 recaptcha submit', function () { onCaptchaSubmit(e); }); }, true);
+    d.addEventListener('click', function (e) { attempt('R3 drawer open', function () { openingDrawer(e); }); }, true);
+    // ADA fix (advisory technique G201) - A4: Duda's runtime sets target="_blank" on tel: links again after the page
+    // loads (addTargetBlankToExternalLinks); the observer below removes it again, and a click on a tel: link never
+    // opens a new window.
+    d.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[target]') : null;
+      if (a && (/^tel:/i.test(a.getAttribute('href') || '') || a.classList.contains('dmCall'))) a.removeAttribute('target');
+    }, true);
+    d.addEventListener('keydown', function (e) { attempt('C5 escape', function () { onDocumentKey(e); }); }, true);
+    // ADA fix (WCAG 2.1.1, 4.1.2) - battery fix 2 R2: the popup "Close" button (role=button, see popupClose) also
+    // responds to Enter and Space, like a native button (Duda only listens for click and, on the page, Escape).
+    d.addEventListener('keydown', function (e) {
+      var k = keyOf(e), t = e.target;
+      if ((k === 'Enter' || k === ' ') && t && t.classList && t.classList.contains('dmPopupClose') && !e.repeat) { e.preventDefault(); t.click(); }
+    });
+    d.addEventListener('focusin', function (e) { attempt('C5 drawer focus', function () { onFocusIn(e); }); }, true);
+    var resizeTimer = 0;
+    w.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { attempt('C5 flip', function () { menubars.forEach(flip); }); }, 150);
+    });
+    w.addEventListener('pageshow', function (e) { if (e.persisted) runAll(); });
+    // Duda and reCAPTCHA add parts of the page after it loads (form captcha, badge, link targets); new elements and
+    // changed link targets get the fixes through a throttled re-run. This observer disconnects 8 s after the load event
+    // (each navigation keeps its own observer, limited to that navigation's attributes).
+    if (!w.MutationObserver || !d.body) return;
+    var timer = 0, budget = 60;
+    var rerun = function () { if (!timer && budget > 0) timer = setTimeout(function () { timer = 0; budget--; runAll(); }, 150); };
+    var bodyObserver = new w.MutationObserver(function (records) {
+      for (var i = 0; i < records.length; i++) {
+        if (records[i].type === 'attributes') { rerun(); return; }
+        var added = records[i].addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          var n = added[j];
+          if (n.nodeType === 1 && !/(^|\s)ada-/.test(n.getAttribute('class') || '')) { rerun(); return; }
+        }
+      }
+    });
+    bodyObserver.observe(d.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['target'] });
+    var settle = function () { setTimeout(function () { bodyObserver.disconnect(); runAll(); }, 8000); };
+    if (d.readyState === 'complete') settle(); else w.addEventListener('load', settle);
+  }
+
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', start);
+  else start();
+})(window, document);
+</script>
