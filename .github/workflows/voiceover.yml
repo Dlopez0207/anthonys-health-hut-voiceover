@@ -15,6 +15,10 @@ on:
         description: "all, or a comma-separated list of browser-page jobs to run (e.g. webkit-home,chromium-home)"
         default: "all"
         required: false
+      form_only:
+        description: "1 = /contact-us form-submission scenario only (navigation sections captured in an earlier job)"
+        default: "0"
+        required: false
 
 permissions:
   contents: read
@@ -47,6 +51,7 @@ jobs:
     env:
       VO_PAGES: ${{ matrix.page }}
       VO_READ_SCALE: ${{ inputs.read_scale }}
+      VO_FORM_ONLY: ${{ inputs.form_only || '0' }}
       RUNNER_OS_LABEL: macos-15
       VO_ORIGIN: ${{ inputs.target == 'baseline' && 'https://www.anthonyshealthhutlakeland.com' || 'http://localhost:4173' }}
       VO_PACKAGE: v1.2.1

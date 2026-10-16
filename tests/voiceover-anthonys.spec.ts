@@ -28,6 +28,12 @@ const READ_SCALE = Number(process.env.VO_READ_SCALE ?? 1);
 const READ_BUDGET_MS = Number(process.env.VO_READ_BUDGET_MIN ?? 40) * 60 * 1000;
 // Form-submission scenario on /contact-us (retest only; human-review item FM-12): VO_FORM=0 turns it off.
 const FORM_SCENARIO = RETEST && (process.env.VO_FORM ?? "1") !== "0";
+// VO_FORM_ONLY=1: /contact-us form-submission scenario only (the read-through, heading, landmark and Tab-order sections are
+// captured in a separate job), so the scenario gets the whole test timeout on the hosted runner.
+const FORM_ONLY = FORM_SCENARIO && process.env.VO_FORM_ONLY === "1";
+// Any single VoiceOver/page step that takes longer than this is abandoned and reported instead of stalling the job.
+function timed(p: Promise<any>, ms: number, label: string): Promise<any> { return Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(`step timed out after ${ms / 1000} s: ${label}`)), ms))]); }
+const stamp = (m: string) => console.log(`[vo ${new Date().toISOString()}] ${m}`);
 // Valid fake data for the simulated submissions (nothing is sent: the staging server's form mock answers locally).
 const FAKE = { name: "Test", email: "test@example.com", phone: "5555550100", message: "Accessibility test" };
 // TEST-ONLY stand-in for Google's reCAPTCHA, installed ONLY in the form-submission scenario (addInitScript, and the
@@ -148,13 +154,14 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
         writeFileSync(file, lines.join("\n") + "\n", "utf8");
       }
 
+      const vo: any = voiceOver;
+      if (!FORM_ONLY) {
       await run("Read-through from the top (VO-Right Arrow)", Math.round(pg.read * READ_SCALE), () => voiceOver.next({ capture: true }), false, t0 + READ_BUDGET_MS, RESERVE);
 
       await back();
       await run("Heading navigation (VO-Cmd-H)", HEADING_STEPS, () => voiceOver.nextHeading({ capture: true }), true);
 
       await back();
-      const vo: any = voiceOver;
       const landmarkCmd = vo.keyboardCommands?.findNextLandmark ?? vo.keyboardCommands?.findNextLandmarkOrItem;
       if (typeof vo.nextLandmark === "function") await run("Landmark navigation (VO-Cmd-L)", LANDMARK_STEPS, () => vo.nextLandmark({ capture: true }), true);
       else if (landmarkCmd) await run("Landmark navigation (VO-Cmd-L)", LANDMARK_STEPS, () => voiceOver.perform(landmarkCmd, { capture: true }), true);
@@ -162,18 +169,31 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
 
       await back();
       await run("Tab order (Tab key)", TAB_STEPS, () => voiceOver.press("Tab"), false, Infinity, formHere ? 9 * 60 * 1000 : 2 * 60 * 1000);
+      } else sections.push({ title: "Session scope", phrases: [], end: "form-submission scenario only", notes: ["This session ran only the /contact-us form-submission scenario. The read-through, heading, landmark, and Tab-order sections of /contact-us were captured in a separate VoiceOver session on the same package."] });
 
       // ---------------------------------------------------------------- Form submission scenario (/contact-us, FM-12)
       const formScenario = async () => {
         const clean = (p: string) => p.replace(/\s+/g, " ").trim();
         // Every distinct phrase VoiceOver speaks during `action` (Guidepup capture: polls VoiceOver's last phrase until stable).
+        // `action` must not call voiceOver.* itself: Guidepup runs commands one at a time, so a VoiceOver command inside
+        // capture() waits forever for the capture that contains it (this hung the first v1.2.1 contact-us job).
         const cap = async (action: () => Promise<unknown>): Promise<string> => {
           try {
-            if (typeof vo.capture === "function") return clean((await vo.capture(action, { capture: true }))?.spokenPhrase ?? "");
-            await action();
-            return await say();
+            if (typeof vo.capture === "function") return clean((await timed(vo.capture(action, { capture: true }), 30000, "capture"))?.spokenPhrase ?? "");
+            await timed(Promise.resolve(action()), 30000, "action");
+            return await timed(say(), 15000, "lastSpokenPhrase");
           } catch (e) { return `(capture error: ${String(e).slice(0, 80)})`; }
         };
+        // A key pressed through VoiceOver (OS-level key event), with its announcement captured.
+        const capKey = async (key: string): Promise<string> => {
+          try {
+            await voiceOver.press(key, { capture: true } as any);
+            const log = await voiceOver.spokenPhraseLog();
+            return clean(log[log.length - 1] ?? "");
+          } catch (e) { return `(capture error: ${String(e).slice(0, 80)})`; }
+        };
+        // A scenario part that does not finish in `ms` is recorded as such instead of hanging the whole test.
+        const withinPart = <T,>(ms: number, p: Promise<T>) => Promise.race([p, new Promise<never>((_, rej) => setTimeout(() => rej(new Error(`scenario step did not finish within ${ms / 60000} min`)), ms))]);
         // Announcements that arrive after the key press (live regions): listen in `rounds` windows of `ms` ms.
         const listen = async (out: string[], ms = 1500, rounds = 6) => {
           for (let i = 0; i < rounds; i++) {
@@ -217,37 +237,39 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
 
         // (a) Tab to the form, submit it empty, capture the error messages.
         const titleA = "Form submission (a): empty form submitted from the keyboard, field error messages";
-        try {
+        try { await withinPart(9 * 60 * 1000, (async () => {
           await page.goto(`${ORIGIN}/contact-us`, { waitUntil: "load" });
           await page.waitForTimeout(3000);
-          await back();
+          stamp("form (a): page loaded");
+          await timed(back(), 60000, "navigateToWebContent");
           const phrases: string[] = []; const notes: string[] = []; const marks: string[] = [];
-          let tabs = 0;
-          for (; tabs < 150; tabs++) {
-            if (await page.evaluate((FORM) => !!(document.activeElement && document.activeElement.closest && document.activeElement.closest(FORM)), FORM)) break;
-            await voiceOver.press("Tab", { capture: false });
-          }
+          // Keyboard access to the form from the top of the page is covered by the Tab-order section of the separate session;
+          // here focus is placed on the first form field and moved with the keyboard from there.
+          const f0 = await visibleForm();
+          await f0.locator("input:not([type=hidden]), textarea:not(.g-recaptcha-response)").first().focus();
+          await page.waitForTimeout(500);
           const reached = await formState();
-          notes.push(`Tab from the top of the page: keyboard focus reached the form after ${tabs} Tab presses (${reached.active}).`);
+          notes.push(`Focus placed on the first form field (${reached.active}); Shift+Tab, then Tab, so VoiceOver announces the field.`);
           // Shift+Tab, then Tab again, so VoiceOver's announcement of the first field is captured.
-          await voiceOver.press("Shift+Tab", { capture: false });
+          await timed(voiceOver.press("Shift+Tab", { capture: false }), 30000, "Shift+Tab");
           await page.waitForTimeout(400);
-          phrases.push(await cap(() => voiceOver.press("Tab", { capture: false }))); marks.push("Tab into the first field");
+          phrases.push(await capKey("Tab")); marks.push("Tab into the first field");
           for (let i = 0; i < 6; i++) {
             if (/type=submit|type=button|^button/.test((await formState()).active)) break;
-            phrases.push(await cap(() => voiceOver.press("Tab", { capture: false }))); marks.push("Tab");
+            phrases.push(await capKey("Tab")); marks.push("Tab");
           }
           const atSubmit = await formState();
           if (!/type=submit|type=button|^button/.test(atSubmit.active)) { notes.push(`Send Message not reached by Tab (focus on ${atSubmit.active}); focused programmatically.`); await submitOf(await visibleForm()).focus(); }
           const before = phrases.length;
-          phrases.push(await cap(() => voiceOver.press("Enter", { capture: false })));
+          stamp("form (a): Enter on Send Message");
+          phrases.push(await capKey("Enter"));
           await listen(phrases);
           const st = await formState();
           notes.push(`Phrases 1-${before}: ${marks.join(", ")} (focus ended on ${atSubmit.active}); phrase ${before + 1}: Enter on Send Message with every field empty; phrases ${before + 2}+: further announcements in the 9 s after the submission (distinct phrases only).`);
           notes.push(`DOM after the empty submission: focus on ${st.active}; aria-invalid fields: ${st.invalid.join(", ") || "none"}; visible role=alert/status/aria-live regions: ${st.alerts.join(" | ") || "none"}; send-error box ${boxText(st.errorBox)}; success box ${boxText(st.successBox)}.`);
           notes.push(`No request is sent for an empty form (Duda validates first). reCAPTCHA test stub active: ${st.stub ? "yes" : "no"} (this scenario only).`);
           sections.push({ title: titleA, phrases: phrases.filter(Boolean), end: "scenario complete", notes });
-        } catch (e) { sections.push({ title: titleA, phrases: [], end: `error: ${String(e).slice(0, 160)}` }); }
+        })()); } catch (e) { sections.push({ title: titleA, phrases: [], end: `error: ${String(e).slice(0, 160)}` }); }
         flush();
 
         // (b) simulated send failure (?mock=error: the staging form mock answers HTTP 500) and (c) inline success.
@@ -257,11 +279,12 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
         ] as const;
         for (const [mode, title] of runs) {
           if (left() < 4 * 60 * 1000) { sections.push({ title, phrases: [], end: `not run: only ${Math.round(left() / 60000)} min of the test timeout left` }); continue; }
-          try {
+          try { await withinPart(6 * 60 * 1000, (async () => {
             const n0 = (await formLog()).length;
             await page.goto(`${ORIGIN}/contact-us?mock=${mode}`, { waitUntil: "load" });
             await page.waitForTimeout(3000);
-            await back();
+            stamp(`form ${mode}: page loaded`);
+            await timed(back(), 60000, "navigateToWebContent");
             const f = await visibleForm();
             await f.locator("input[type='text']").first().fill(FAKE.name);
             await f.locator("input[type='email']").first().fill(FAKE.email);
@@ -271,7 +294,7 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
             await submitOf(f).focus();
             await page.waitForTimeout(800);
             const phrases: string[] = [];
-            phrases.push(await cap(() => voiceOver.press("Enter", { capture: false })));
+            phrases.push(await capKey("Enter"));
             await listen(phrases);
             const st = await formState();
             const posted = (await formLog()).slice(n0);
@@ -285,7 +308,7 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
               SIM,
             ];
             sections.push({ title, phrases: phrases.filter(Boolean), end: "scenario complete", notes });
-          } catch (e) { sections.push({ title, phrases: [], end: `error: ${String(e).slice(0, 160)}` }); }
+          })()); } catch (e) { sections.push({ title, phrases: [], end: `error: ${String(e).slice(0, 160)}` }); }
           flush();
         }
         const sent = (await formLog()).slice(log0);
@@ -296,6 +319,7 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
       };
 
       if (formHere) {
+        stamp("form scenario start");
         if (left() < 8 * 60 * 1000) sections.push({ title: "Form submission (not run)", phrases: [], end: `only ${Math.round(left() / 60000)} min of the test timeout left` });
         else await formScenario();
       }
@@ -304,7 +328,7 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
       const total = sections.reduce((a, s) => a + s.phrases.length, 0);
       flush(spoken);
       await testInfo.attach(`voiceover-${pg.slug}-${browserName}`, { path: file, contentType: "text/plain" });
-      expect(total).toBeGreaterThan(10);
+      expect(total).toBeGreaterThan(FORM_ONLY ? 3 : 10);
     });
   }
 });
