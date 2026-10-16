@@ -99,6 +99,8 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
           if (left() < reserve) { end = `stopped to keep time for the remaining sections (${Math.round(left() / 60000)} min left)`; break; }
           try { await step(); } catch (e) { end = `error: ${String(e).slice(0, 120)}`; break; }
           const p = await say();
+          // macOS Quick Note (hot corner) is not page content: report it instead of counting it as the end of the page.
+          if (/Quick Note dialog/.test(p)) { end = "interrupted: macOS Quick Note dialog opened (runner hot corner)"; phrases.push(p); break; }
           if (phrases.length && p === phrases[phrases.length - 1]) { if (++repeat >= 2) { end = "end of content (repeated phrase)"; break; } } else repeat = 0;
           if (wrap && phrases.length > 1 && p === phrases[0]) { end = "wrapped to the first item"; break; }
           phrases.push(p);

@@ -11,12 +11,30 @@ on:
         description: "baseline = published site; retest = corrected staging copy served on the runner"
         default: "retest"
         required: false
+      jobs:
+        description: "all, or a comma-separated list of browser-page jobs to run (e.g. webkit-home,chromium-home)"
+        default: "all"
+        required: false
 
 permissions:
   contents: read
 
 jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+    steps:
+      - id: m
+        env:
+          WANT: ${{ inputs.jobs || 'all' }}
+        run: |
+          all='[{"browser":"webkit","page":"home"},{"browser":"webkit","page":"about-us"},{"browser":"webkit","page":"contact-us"},{"browser":"webkit","page":"menu"},{"browser":"webkit","page":"vitamins-and-minerals"},{"browser":"chromium","page":"home"}]'
+          m=$(echo "$all" | jq -c --arg w "$WANT" 'if $w == "all" then . else map(select(("," + $w + ",") | contains("," + .browser + "-" + .page + ","))) end')
+          echo "matrix=$m" >> "$GITHUB_OUTPUT"; echo "$m"
+
   voiceover:
+    needs: plan
     name: VoiceOver / ${{ matrix.browser }} / ${{ matrix.page }}
     runs-on: macos-15
     # Full read-through + form-submission scenario: Playwright test timeout 75 min (playwright.config.ts), job 90 min.
@@ -25,13 +43,7 @@ jobs:
       fail-fast: false
       # One macOS runner per page so the templates run in parallel (VoiceOver allows one session per machine).
       matrix:
-        include:
-          - { browser: webkit, page: home }
-          - { browser: webkit, page: about-us }
-          - { browser: webkit, page: contact-us }
-          - { browser: webkit, page: menu }
-          - { browser: webkit, page: vitamins-and-minerals }
-          - { browser: chromium, page: home }
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
     env:
       VO_PAGES: ${{ matrix.page }}
       VO_READ_SCALE: ${{ inputs.read_scale }}
@@ -51,6 +63,15 @@ jobs:
       # Accessibility permissions in the user TCC.db, AppleScript control of VoiceOver, welcome dialog suppressed.
       - name: Prepare macOS for VoiceOver automation
         run: npx -y @guidepup/setup@0.29.1 setup --ci
+
+      # The runner image maps the bottom-right hot corner to Quick Note: when VoiceOver's cursor (and the mouse that follows
+      # it) reached an item in that corner, macOS opened a "Quick Note" dialog and the read-through stopped there
+      # (home, run 38901941854). Hot corners are switched off on the runner VM only.
+      - name: Disable macOS hot corners (Quick Note)
+        run: |
+          for c in tl tr bl br; do defaults write com.apple.dock "wvous-$c-corner" -int 1; defaults write com.apple.dock "wvous-$c-modifier" -int 0; done
+          killall Dock || true
+          defaults read com.apple.dock | grep wvous || true
 
       - name: Install npm dependencies
         run: npm ci --no-audit --no-fund --no-progress
