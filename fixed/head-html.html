@@ -1,15 +1,17 @@
-<!-- ADA fixes for anthonyshealthhutlakeland.com v1.2.0 (built 2026-10-13). Paste this whole block in Duda:
+<!-- ADA fixes for anthonyshealthhutlakeland.com v1.2.1 (built 2026-10-14). Paste this whole block in Duda:
      Site Settings > Head HTML (site-wide; desktop and phone layouts). Source with comments: ada-fixes.css + ada-fixes.js.
      Each fix is marked "ADA fix (WCAG x.x.x)" with its Exhibit B finding (F1-F12, A1-A14) and change row (C1-C13).
-     Hosted-file alternative: see head-html.hosted.html (change ?v=1.2.0 on every update for cache busting). -->
-<style id="ada-fixes-css" data-version="1.2.0">
-/*! ADA fixes for anthonyshealthhutlakeland.com - CSS v1.2.0 (2026-10-13)
+     Hosted-file alternative: see head-html.hosted.html (change ?v=1.2.1 on every update for cache busting). -->
+<style id="ada-fixes-css" data-version="1.2.1">
+/*! ADA fixes for anthonyshealthhutlakeland.com - CSS v1.2.1 (2026-10-14)
     Site-wide, desktop and phone layouts. Goes inside <style> in Duda: Site Settings > Head HTML
-    (hosted-file alternative: link it with ?v=1.2.0 and change that number on every update).
+    (hosted-file alternative: link it with ?v=1.2.1 and change that number on every update).
     v1.2.0: AAA colors (WCAG 1.4.6) are part of the package (client directive: 100 in every tool) and the Google map
     of /contact-us loads on request (C15).
+    v1.2.1 (manual checklist fixes): scroll padding under the fixed header (C18, WCAG 2.4.11), a wider drawer menu with
+    wrapping labels in narrow desktop windows (C1, WCAG 1.4.10) and a map placeholder that grows with its text (C15).
     Every block is marked "ADA fix (WCAG x.x.x)" with the finding of Exhibit B (Revised October 9, 2026)
-    (F = confirmed failure, A = advisory recommendation) and the change-matrix row (C1-C15). */
+    (F = confirmed failure, A = advisory recommendation) and the change-matrix row (C1-C18). */
 
 /* ADA fix (best practice; advisory technique G201) - A2, A4 (C9): shared helper, text for assistive technology only
    (" (opens in a new window)" added to links by the script) */
@@ -80,6 +82,38 @@
   body:not(.dmMobileBody) #hamburger-header-container, body:not(.dmMobileBody) #site_content .layout-drawer-hamburger.hamburger-on-header { position: absolute !important; }
 }
 
+/* ADA fix (WCAG 1.4.10) - F8 (C1), v1.2.1 (manual checklist "Reflow and 400% zoom"): in the desktop layout at 320-480 CSS px
+   (desktop browsers zoomed to 300-400 %) Duda's drawer menu was 49vw wide (157 px at 320 px, 176 px at 360 px) with 40 px
+   side padding and a 9em minimum width on the menu, while its items needed 207 px: the drawer scrolled horizontally as
+   well as vertically and "Supplements & Wellness" / "Nutrition & Performance" were cut off at its right edge. The drawer
+   is now as wide as the window up to 320 px (it still slides in from the right; the menu button stays above it), with
+   16 px side padding, and the labels wrap inside it. Wider windows and the phone layout keep Duda's drawer. */
+@media (max-width: 480px) {
+  body:not(.dmMobileBody) #dm .p_hfcontainer #hamburger-drawer.layout-drawer:not([data-origin="top"]),
+  body:not(.dmMobileBody) #hamburger-drawer.layout-drawer { width: min(100vw, 320px) !important; max-width: 100vw !important; }
+  body:not(.dmMobileBody) #dm .p_hfcontainer #hamburger-drawer .dmRespRow,
+  body:not(.dmMobileBody) #hamburger-drawer .dmRespRow { padding-left: 16px !important; padding-right: 16px !important; }
+  body:not(.dmMobileBody) #dm .p_hfcontainer #hamburger-drawer nav.main-navigation.unifiednav,
+  body:not(.dmMobileBody) #hamburger-drawer nav.unifiednav { min-width: 0 !important; width: 100% !important; max-width: 100% !important; }
+  body:not(.dmMobileBody) #hamburger-drawer .unifiednav__container,
+  body:not(.dmMobileBody) #hamburger-drawer .unifiednav__item-wrap,
+  body:not(.dmMobileBody) #dm .p_hfcontainer #hamburger-drawer .unifiednav__item-wrap > a.unifiednav__item,
+  body:not(.dmMobileBody) #hamburger-drawer a.unifiednav__item { min-width: 0 !important; max-width: 100% !important; box-sizing: border-box !important; }
+  body:not(.dmMobileBody) #hamburger-drawer a.unifiednav__item,
+  body:not(.dmMobileBody) #hamburger-drawer a.unifiednav__item * { white-space: normal !important; overflow-wrap: anywhere !important; }
+}
+
+/* ADA fix (WCAG 2.4.11) - C18 (v1.2.1, manual checklist "Focus not obscured"): scroll padding at the top of the page
+   equal to the fixed header + 8 px, so that a control focused with Shift+Tab (or reached by an anchor) is scrolled
+   below the header instead of behind it. --ada-header-h is the header's real height, measured by the script on load,
+   scroll and resize (Duda's desktop header shrinks to 45 px when the page scrolls; RF-8 lets the narrow header scroll
+   away in short windows, 0 px). Fallback values when the script cannot run: 45 px desktop menu bar, 129 px narrow
+   desktop window (86 px at 1024 px, up to 129 px at 390 px), 63 px phone header. */
+html { --ada-header-fallback: 45px; scroll-padding-top: calc(var(--ada-header-h, var(--ada-header-fallback)) + 8px) !important; }
+@media (max-width: 1024px) { html { --ada-header-fallback: 129px; } }
+@media (max-width: 767px) and (max-height: 400px) { html { --ada-header-fallback: 0px; } }
+html:has(> body.dmMobileBody) { --ada-header-fallback: 63px; }
+
 /* ADA fix (WCAG 1.4.10) - F8 (C1), battery fix 2 VR-1/VR-2: metric-matched fallback for Caprasimo, used only by the rule
    above (narrow desktop layout). Local Georgia, no download; size-adjust 114.3% = mean width ratio Caprasimo / Georgia
    over the 42 heading texts of the site (spread 1.098-1.176, the closest of 8 system fonts); ascent/descent as
@@ -147,7 +181,7 @@ body:not(.dmMobileBody) #dm .dmRespRow.u_1425559235 { background-color: #085500 
 body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { background-color: #085500 !important; }
 
 /* ADA fix (WCAG 1.4.6, AAA) - client directive 100 (v1.2.0; EqualWeb EW-2): the "Download the menu (PDF, 2 pages)" link
-   of our menu section (E5) #0C6937 (6.79:1) -> #0A5A2F (8.4:1 on white). The rest of the menu section keeps the printed
+   of our menu section (Duda editor change ED5) #0C6937 (6.79:1) -> #0A5A2F (8.4:1 on white). The rest of the menu section keeps the printed
    menu's green. */
 #ada-menu .ada-menu-download a { color: #0A5A2F !important; }
 
@@ -156,10 +190,12 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
    "Open in Google Maps" link (built by the script) inside the widget's own box (636 px desktop, 250 px phone), so
    nothing moves on load. When the visitor shows the map, Google's iframe gets the box's height and the link stays
    under it (the widget grows by the link's line, a change the visitor asked for).
+   v1.2.1 (WCAG 1.4.4, 1.4.12; manual checklist advisory): the box's height is a MINIMUM height (the widget's own height,
+   measured by the script) and the widget grows with its content, so enlarged text no longer overflows onto the photo.
    Colors: text #1a1a1a and #0c4a08 on white (17:1, 10.6:1), button white on #0c4a08 (10.6:1), focus outlines #0c4a08
    (10.6:1 against white). Targets at least 44 px tall. */
-.ada-map { box-sizing: border-box !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; gap: 12px !important; width: 100% !important; height: 100% !important; min-height: 0 !important; overflow: visible !important; margin: 0 !important; padding: 16px !important; background: #ffffff !important; border: 1px solid #3D7A37 !important; text-align: center !important; color: #1a1a1a !important; font: 400 16px/1.5 Arial, Helvetica, sans-serif !important; }
-.ada-map[data-ada-map="loaded"] { height: auto !important; justify-content: flex-start !important; gap: 4px !important; padding: 0 !important; border: 0 !important; }
+.ada-map { box-sizing: border-box !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; gap: 12px !important; width: 100% !important; height: auto !important; min-height: 100% !important; overflow: visible !important; margin: 0 !important; padding: 16px !important; background: #ffffff !important; border: 1px solid #3D7A37 !important; text-align: center !important; color: #1a1a1a !important; font: 400 16px/1.5 Arial, Helvetica, sans-serif !important; }
+.ada-map[data-ada-map="loaded"] { height: auto !important; min-height: 0 !important; justify-content: flex-start !important; gap: 4px !important; padding: 0 !important; border: 0 !important; }
 .ada-map[data-ada-map="loaded"] > iframe { display: block !important; flex: 0 0 auto !important; width: 100% !important; border: 0 !important; }
 .ada-map:focus { outline: 3px solid #0c4a08 !important; outline-offset: 2px !important; }
 .ada-map .ada-map-address { margin: 0 !important; padding: 0 !important; color: #1a1a1a !important; font: inherit !important; }
@@ -169,21 +205,23 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
 .ada-map .ada-map-open { display: inline-block !important; min-height: 24px !important; padding: 10px 4px !important; color: #0c4a08 !important; font: inherit !important; text-decoration: underline !important; }
 .ada-map .ada-map-open:focus-visible { outline: 3px solid #0c4a08 !important; outline-offset: 2px !important; }
 </style>
-<script id="ada-fixes-js" data-version="1.2.0">
-/*! ADA fixes for anthonyshealthhutlakeland.com - JS v1.2.0 (2026-10-13)
+<script id="ada-fixes-js" data-version="1.2.1">
+/*! ADA fixes for anthonyshealthhutlakeland.com - JS v1.2.1 (2026-10-14)
     Site-wide, desktop and phone layouts. Goes inside <script> in Duda: Site Settings > Head HTML
-    (hosted-file alternative: load it with ?v=1.2.0 and change that number on every update).
+    (hosted-file alternative: load it with ?v=1.2.1 and change that number on every update).
     v1.1.0-v1.1.1 (review fixes): skip-link target focusable only while the skip link uses it, Escape dismisses every
     hover-opened submenu, no changes inside the Duda editor, PhotoSwipe/drawer hidden states, robust form messages.
     v1.2.0: Google reCAPTCHA loaded on first use of the form (C14) and the Google map loaded on request (C15).
-    Change-matrix rows C4-C15 (C1-C3 are CSS only). Every block is marked "ADA fix (WCAG x.x.x)" with the
+    v1.2.1 (manual checklist fixes): Duda's accessible form errors always on (C17), focused controls kept clear of the
+    fixed header (C18), header button icon fonts hidden from the name (C10) and a map placeholder that grows (C15).
+    Change-matrix rows C4-C18 (C1-C3 are CSS only). Every block is marked "ADA fix (WCAG x.x.x)" with the
     finding of Exhibit B (Revised October 9, 2026): F = confirmed failure, A = advisory recommendation.
     It cooperates with Duda's own scripts: it adds roles, states, names and the keys Duda does not handle,
     and never removes Duda's listeners. No dependencies, no console output; status in window.adaFixes. */
 (function (w, d) {
   'use strict';
 
-  var VERSION = '1.2.0';
+  var VERSION = '1.2.1';
   // ADA fix (best practice) - idempotent: a second copy of this script (for example Head HTML + hosted file) does nothing.
   if (w.adaFixes && w.adaFixes.version) return;
   var EP = w.Element && w.Element.prototype;
@@ -239,6 +277,48 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
     return all('a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), iframe, [tabindex]', root)
       .filter(function (el) { return el.getAttribute('tabindex') !== '-1' && shown(el); });
   }
+
+  // ---------------------------------------------------------------- C17: Duda's accessible form errors always on
+  // ADA fix (WCAG 3.3.1, 3.3.3, 1.4.1) - C17 (v1.2.1, manual checklist "Error identification"; related F4): Duda's runtime
+  // shows its accessible field errors ("This field is required" / "Please enter a valid email" under the field, role=alert,
+  // aria-invalid=true, aria-describedby) only when the page's runtime flag rtFlags["contact.form.custom.errors.enabled"]
+  // is true. Duda's server writes that flag into every page response ("window.rtFlags = {}; ... = false;" in the body)
+  // and some responses carry false (runtime builds 6831/6839 in the 2026-10-13 snapshot: desktop /digestive-health,
+  // phone /cbd-and-hemp-products, /household-and-eco-friendly-living, /thank-you). With false, an empty submission only
+  // gets a red outline (color only, nothing in text, nothing announced). This script runs in the head, before Duda's
+  // body script, and keeps the flag true:
+  //  - window.rtFlags becomes an accessor property: every object Duda assigns to it (now or later, also a new object)
+  //    gets the key as a getter that always returns true (assignments of false are ignored);
+  //  - if rtFlags already exists when this runs, the key is pinned on that object at once;
+  //  - if window.rtFlags cannot be redefined (a non-configurable global), the key is set on the current object and set
+  //    again whenever the fixes run (DOMContentLoaded and every re-run).
+  // Only this one flag is touched; every other Duda flag keeps its value. Nothing changes when the flag is already true.
+  // It runs before the editor test (RF-6) because it must precede Duda's body script; it changes no markup, so nothing
+  // of it can be saved into the site's content by the editor.
+  var FORM_ERRORS_FLAG = 'contact.form.custom.errors.enabled';
+  function alwaysTrue() { return true; }
+  alwaysTrue.adaPinned = true;
+  function pinFormErrors(flags) {
+    if (!flags || (typeof flags !== 'object' && typeof flags !== 'function')) return flags;
+    var desc = Object.getOwnPropertyDescriptor(flags, FORM_ERRORS_FLAG);
+    if (desc && desc.get === alwaysTrue) return flags;
+    try {
+      Object.defineProperty(flags, FORM_ERRORS_FLAG, { configurable: true, enumerable: true, get: alwaysTrue, set: function () {} });
+    } catch (err) {
+      try { flags[FORM_ERRORS_FLAG] = true; } catch (err2) { /* frozen object: nothing more can be done */ }
+    }
+    return flags;
+  }
+  function formErrorsFlag() {
+    var desc = Object.getOwnPropertyDescriptor(w, 'rtFlags');
+    if (desc && desc.get && desc.get.adaFlags) { pinFormErrors(w.rtFlags); return; }
+    var value = pinFormErrors(w.rtFlags);
+    if (desc && !desc.configurable) return; // keeps the direct pin; re-applied on every run
+    var getter = function () { return value; };
+    getter.adaFlags = true;
+    Object.defineProperty(w, 'rtFlags', { configurable: true, enumerable: true, get: getter, set: function (v) { value = pinFormErrors(v); } });
+  }
+  attempt('C17 form errors flag', formErrorsFlag);
 
   // ---------------------------------------------------------------- C12: skip link and landmarks
   // ADA fix (best practice; WCAG 2.4.1) - A11: "Skip to main content" link, first in the tab order, visible on focus,
@@ -735,6 +815,16 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
       var inGlobal = svg.closest('.graphicWidget') && svg.closest('.dmFooterContainer, .dmHeaderContainer, .hamburger-header-container');
       if (inGlobal || /\bicon$/i.test(title ? squash(title.textContent) : '')) hideIcon(svg);
     });
+    // ADA fix (best practice; related WCAG 2.5.3, 1.1.1) - A5 (C10, v1.2.1, manual checklist advisory): Duda's button
+    // widgets draw their icon with an icon font (span.iconBg > span.icon::before, e.g. dm-icon-phone = U+EA6E), and the
+    // private-use glyph became the first character of the accessible name ("U+EA6E (863) 644-5330" on the desktop header
+    // call button). When the button has visible text, the icon wrapper is hidden from assistive technology, so the name
+    // is the visible text only. Icon-only buttons are left alone (their name would become empty).
+    all('a.dmButtonLink .iconBg, a.dmButtonLink .icon[class*="dm-icon-"]').forEach(function (icon) {
+      if (icon.closest('[aria-hidden="true"]')) return;
+      var a = icon.closest('a.dmButtonLink'), label = a && a.querySelector('.text');
+      if (label && squash(label.textContent) && !icon.contains(label)) setAttr(icon, 'aria-hidden', 'true');
+    });
   }
 
   // ---------------------------------------------------------------- C13: spacer paragraphs
@@ -964,7 +1054,7 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
   // region, which is named "Map of <place>". No picture of Google's map is used. Google's map itself is unchanged once
   // loaded (its controls were evaluated as conforming in Exhibit B, section 3). The iframe is taken out while the page is
   // being parsed (observer started by this script in the head), before Google's map is requested.
-  // Editor alternative (CAMBIOS-ADA.md): put the same facade markup in the HTML widget instead of the iframe.
+  // Editor alternative (ADA-CHANGES.md, section 3.10): put the same facade markup in the HTML widget instead of the iframe.
   var MAP_SRC = /^https:\/\/(www\.)?google\.[a-z.]+\/maps\/embed\?|^https:\/\/maps\.google\.[a-z.]+\/maps\?.*output=embed/i;
   // Place shown before the map loads: the name of the embed's own place and the address printed on /contact-us
   // ("Our Location: 5329 South Florida Ave, Lakeland, FL 33813").
@@ -1023,6 +1113,7 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
     var height = Math.round(box.getBoundingClientRect().height) || 250;
     if (addr) box.removeChild(addr);
     if (btn) box.removeChild(btn);
+    box.style.removeProperty('min-height');
     // Google's iframe keeps the height of the widget's box (its own height="100%" no longer resolves once the box grows)
     frame.style.setProperty('height', height + 'px', 'important');
     var widget = box.parentElement;
@@ -1041,9 +1132,25 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
   function mapLinks() {
     mapFrames.forEach(function (box) { var a = box.querySelector('a.ada-map-open'); if (a && !a.getAttribute('href')) a.setAttribute('href', mapsLink()); });
   }
+  // ADA fix (WCAG 1.4.4, 1.4.12) - C15 (v1.2.1, manual checklist advisory): the widget box of the map has a fixed height
+  // in Duda (250 px phone, 636 px desktop), so with larger text (text-only 200 %) the address and the button overflowed
+  // it onto the photo below. The placeholder now keeps the widget's height as a MINIMUM height (measured from Duda's own
+  // CSS, again after every resize) and the widget grows with its content.
+  function sizeMaps() {
+    mapFrames.forEach(function (box) {
+      var host = box.parentElement;
+      if (!host || box.getAttribute('data-ada-map') !== 'facade') return;
+      host.style.removeProperty('height');
+      box.style.removeProperty('min-height');
+      var h = Math.round(host.getBoundingClientRect().height);
+      if (h > 0) box.style.setProperty('min-height', h + 'px', 'important');
+      host.style.setProperty('height', 'auto', 'important');
+    });
+  }
   function maps() {
     all('iframe').forEach(swapMap);
     mapLinks();
+    sizeMaps();
   }
   // Editor canvas (RF-6): every iframe goes back exactly where it was.
   function restoreMaps() {
@@ -1066,6 +1173,69 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
     earlyMaps.observe(d.documentElement, { childList: true, subtree: true });
   }
 
+  // ---------------------------------------------------------------- C18: focus not obscured by the fixed header
+  // ADA fix (WCAG 2.4.11) - C18 (v1.2.1, manual checklist "Focus not obscured"): the header stays fixed at the top of the
+  // window (45 px desktop menu bar once the page is scrolled, 86-129 px narrow desktop window, 63 px phone). Moving
+  // backward with Shift+Tab, the browser scrolled the newly focused control only until its top edge reached the top of
+  // the window, i.e. completely behind the header (footer form fields, home category links, /contact-us links).
+  // 1. The real height of the fixed header is measured (on load, resize and scroll, because Duda's desktop header shrinks
+  //    from 140 px to 45 px when the page scrolls, and RF-8 lets it scroll away in short narrow windows) and written to
+  //    the CSS variable --ada-header-h on <html>; the CSS sets scroll-padding-top = that height + 8 px (with per-layout
+  //    fallback values when the script cannot run), which the browser uses when it scrolls focus, anchors or
+  //    scrollIntoView targets into view.
+  // 2. Belt and braces: after keyboard focus moves (focus-visible), a control that still ends up under the header (a
+  //    browser that ignores scroll-padding for focus) is scrolled down just clear of it. Controls inside the header or the
+  //    drawer (fixed themselves) and pointer focus are left alone.
+  var HEADERS = '.dmHeaderContainer, #hamburger-header-container, .hamburger-header-container';
+  var headerPx = -1, headerFrame = 0;
+  function fixedHost(el) {
+    for (var e = el; e && e !== d.body && e !== d.documentElement; e = e.parentElement) {
+      var pos = w.getComputedStyle(e).position;
+      if (pos === 'fixed' || pos === 'sticky') return e;
+    }
+    return null;
+  }
+  function headerBottom() {
+    var max = 0, vw = w.innerWidth || d.documentElement.clientWidth, vh = w.innerHeight || d.documentElement.clientHeight;
+    all(HEADERS).forEach(function (h) {
+      if (!shown(h) || !fixedHost(h)) return;
+      var r = h.getBoundingClientRect();
+      if (r.top <= 1 && r.bottom > 0 && r.bottom < vh / 2 && r.width >= vw / 2) max = Math.max(max, r.bottom);
+    });
+    return Math.ceil(max);
+  }
+  function measureHeader() {
+    headerFrame = 0;
+    var px = headerBottom();
+    if (px === headerPx) return;
+    headerPx = px;
+    d.documentElement.style.setProperty('--ada-header-h', px + 'px');
+  }
+  function queueHeader() {
+    if (headerFrame) return;
+    headerFrame = (w.requestAnimationFrame || function (f) { return setTimeout(f, 16); })(function () { attempt('C18 header height', measureHeader); });
+  }
+  var FOCUS_GAP = 8;
+  function keepFocusClear(t) {
+    if (!t || t.nodeType !== 1 || t === d.body || t === d.documentElement) return;
+    try { if (!t.matches(':focus-visible')) return; } catch (err) { /* no :focus-visible support: treat as keyboard */ }
+    if (fixedHost(t)) return; // the header, the drawer and other fixed parts never scroll under the header
+    measureHeader();
+    if (headerPx <= 0) return;
+    var r = t.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    var vh = w.innerHeight || d.documentElement.clientHeight;
+    var room = vh - headerPx - FOCUS_GAP;
+    if (!(r.top < headerPx + FOCUS_GAP && r.bottom > 0 && r.height <= room)) return;
+    var delta = Math.floor(r.top - headerPx - FOCUS_GAP);
+    try { w.scrollBy({ top: delta, left: 0, behavior: 'instant' }); } catch (err) { w.scrollBy(0, delta); }
+  }
+  function onFocusClear(e) {
+    var t = e.target;
+    // after the browser's own scrolling for this focus change
+    setTimeout(function () { if (d.activeElement === t) attempt('C18 focus clear', function () { keepFocusClear(t); }); }, 0);
+  }
+
   // ---------------------------------------------------------------- Duda editor
   // ADA fix (best practice) - review fix RF-6: inside the Duda editor canvas the script changes nothing, so the editor
   // never saves markup added here (screen-reader-only text, aria-hidden spacers, link names) into the site's content.
@@ -1086,6 +1256,7 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
   // ---------------------------------------------------------------- run
   function runAll() {
     api.runs++;
+    attempt('C17 form errors flag', formErrorsFlag);
     attempt('C12 skip link', skipLink);
     attempt('C12 landmarks', landmarks);
     attempt('C5 navigation', navigation);
@@ -1099,6 +1270,7 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
     attempt('R3 drawer', drawers);
     attempt('C14 recaptcha', lazyRecaptcha);
     attempt('C15 map', maps);
+    attempt('C18 header height', measureHeader);
   }
   api.run = runAll;
 
@@ -1128,10 +1300,19 @@ body:not(.dmMobileBody) #dm nav[data-ada-nav="menubar"] a.dmNavItemSelected { ba
       if ((k === 'Enter' || k === ' ') && t && t.classList && t.classList.contains('dmPopupClose') && !e.repeat) { e.preventDefault(); t.click(); }
     });
     d.addEventListener('focusin', function (e) { attempt('C5 drawer focus', function () { onFocusIn(e); }); }, true);
+    // C18: focused controls kept clear of the fixed header; header height followed on scroll and resize.
+    d.addEventListener('focusin', function (e) { attempt('C18 focus clear', function () { onFocusClear(e); }); });
+    w.addEventListener('scroll', queueHeader, { passive: true });
+    w.addEventListener('load', queueHeader);
     var resizeTimer = 0;
     w.addEventListener('resize', function () {
+      queueHeader();
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function () { attempt('C5 flip', function () { menubars.forEach(flip); }); }, 150);
+      resizeTimer = setTimeout(function () {
+        attempt('C5 flip', function () { menubars.forEach(flip); });
+        attempt('C15 map size', sizeMaps);
+        attempt('C18 header height', measureHeader);
+      }, 150);
     });
     w.addEventListener('pageshow', function (e) { if (e.persisted) runAll(); });
     // Duda and reCAPTCHA add parts of the page after it loads (form captcha, badge, link targets); new elements and

@@ -9,7 +9,9 @@ const config: PlaywrightTestConfig = {
   outputDir: "test-results",
   reportSlowTests: null,
   // One test per page template; each runs several hundred VoiceOver commands (>1 s each is possible).
-  timeout: 40 * 60 * 1000,
+  // v1.2.1 retest: full read-through (no read_scale reduction) + the /contact-us form-submission scenario -> 75 min
+  // (the job timeout in .github/workflows/voiceover.yml is 90 min).
+  timeout: 75 * 60 * 1000,
   retries: 0,
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",
   projects: [

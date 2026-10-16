@@ -19,7 +19,8 @@ jobs:
   voiceover:
     name: VoiceOver / ${{ matrix.browser }} / ${{ matrix.page }}
     runs-on: macos-15
-    timeout-minutes: 45
+    # Full read-through + form-submission scenario: Playwright test timeout 75 min (playwright.config.ts), job 90 min.
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       # One macOS runner per page so the templates run in parallel (VoiceOver allows one session per machine).
@@ -36,7 +37,9 @@ jobs:
       VO_READ_SCALE: ${{ inputs.read_scale }}
       RUNNER_OS_LABEL: macos-15
       VO_ORIGIN: ${{ inputs.target == 'baseline' && 'https://www.anthonyshealthhutlakeland.com' || 'http://localhost:4173' }}
-      VO_PACKAGE: v1.2.0
+      VO_PACKAGE: v1.2.1
+      VO_EXPECTED_HEAD_SHA: 8767b7871edcaa4792311dc71b90b00b3463cec90ee947834ca6b899e92ec70d
+      VO_STAGING_MODE: offline snapshot (fixed/staging/cache, captured 2026-10-12/13; no request to the live site)
     steps:
       - uses: actions/checkout@v6
 
@@ -58,10 +61,19 @@ jobs:
       - name: Install Guidepup VoiceOver assets
         run: npx -y @guidepup/setup@0.29.1 install
 
-      - name: Start the corrected staging copy (published pages + fix package, GET-only proxy)
+      - name: Verify the fix package (Head HTML SHA-256)
         if: inputs.target != 'baseline'
         run: |
-          nohup node fixed/staging/server.mjs > staging.log 2>&1 &
+          sha=$(shasum -a 256 fixed/head-html.html | cut -d' ' -f1)
+          echo "head-html.html SHA-256 $sha (expected $VO_EXPECTED_HEAD_SHA)"
+          test "$sha" = "$VO_EXPECTED_HEAD_SHA"
+          echo "VO_HEAD_SHA=$sha" >> "$GITHUB_ENV"
+          shasum -a 256 fixed/editor/editor-sim.mjs fixed/staging/server.mjs fixed/menu/*
+
+      - name: Start the corrected staging copy (snapshot of the published pages + fix package, offline)
+        if: inputs.target != 'baseline'
+        run: |
+          nohup node fixed/staging/server.mjs --offline > staging.log 2>&1 &
           for i in $(seq 1 30); do curl -fsS http://localhost:4173/__staging/health && break; sleep 2; done
           curl -fsS -o /dev/null -w "page %{http_code} " http://localhost:4173/
           curl -fsS -A "Mozilla/5.0 (Macintosh)" http://localhost:4173/menu | grep -c "Restaurant Menu" || true
@@ -79,3 +91,4 @@ jobs:
             test-results/**
             playwright-report/**
             staging.log
+            fixed/staging/logs/**

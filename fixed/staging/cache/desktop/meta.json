@@ -1,0 +1,466 @@
+{
+ "/": {
+  "url": "https://www.anthonyshealthhutlakeland.com/",
+  "file": "desktop/index.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 246900,
+  "fetchedAt": "2026-10-13T01:03:42.826Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "link": "<https://irp.cdn-website.com/29be52b5/dms3rep/multi/opt/IMG_0932-c9a41534-1920w.jpeg>; rel=preload; as=image; fetchpriority=high",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/__health": {
+  "url": "https://www.anthonyshealthhutlakeland.com/__health",
+  "file": "desktop/__health.html",
+  "status": 404,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 104262,
+  "fetchedAt": "2026-10-13T12:54:01.589Z",
+  "ua": "curl/8.7.1",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "Accept-Encoding, user-agent,accept-encoding"
+  }
+ },
+ "/about-us": {
+  "url": "https://www.anthonyshealthhutlakeland.com/about-us",
+  "file": "desktop/about-us.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 120913,
+  "fetchedAt": "2026-10-13T01:03:44.588Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "link": "<https://irp.cdn-website.com/29be52b5/dms3rep/multi/opt/IMG_0917-2880w.jpeg>; rel=preload; as=image; fetchpriority=high",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/beauty-and-anti-aging": {
+  "url": "https://www.anthonyshealthhutlakeland.com/beauty-and-anti-aging",
+  "file": "desktop/beauty-and-anti-aging.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 113872,
+  "fetchedAt": "2026-10-13T01:03:52.654Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/cbd-and-hemp-products": {
+  "url": "https://www.anthonyshealthhutlakeland.com/cbd-and-hemp-products",
+  "file": "desktop/cbd-and-hemp-products.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118579,
+  "fetchedAt": "2026-10-13T01:03:49.634Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/contact-us": {
+  "url": "https://www.anthonyshealthhutlakeland.com/contact-us",
+  "file": "desktop/contact-us.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 168015,
+  "fetchedAt": "2026-10-13T01:02:47.023Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "link": "<https://irp.cdn-website.com/29be52b5/dms3rep/multi/IMG_0928.jpeg>; rel=preload; as=image; fetchpriority=high",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/daily-specials": {
+  "url": "https://www.anthonyshealthhutlakeland.com/daily-specials",
+  "file": "desktop/daily-specials.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 110754,
+  "fetchedAt": "2026-10-13T01:03:46.600Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/detox": {
+  "url": "https://www.anthonyshealthhutlakeland.com/detox",
+  "file": "desktop/detox.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118477,
+  "fetchedAt": "2026-10-13T01:03:53.663Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/detox-cleansing-and-alkalizing": {
+  "url": "https://www.anthonyshealthhutlakeland.com/detox-cleansing-and-alkalizing",
+  "file": "desktop/detox-cleansing-and-alkalizing.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118865,
+  "fetchedAt": "2026-10-13T01:03:50.646Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/digestive-health": {
+  "url": "https://www.anthonyshealthhutlakeland.com/digestive-health",
+  "file": "desktop/digestive-health.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 113756,
+  "fetchedAt": "2026-10-13T01:03:54.673Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/herbal-and-botanical-remedies": {
+  "url": "https://www.anthonyshealthhutlakeland.com/herbal-and-botanical-remedies",
+  "file": "desktop/herbal-and-botanical-remedies.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118684,
+  "fetchedAt": "2026-10-13T01:03:55.685Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/home": {
+  "url": "https://www.anthonyshealthhutlakeland.com/home",
+  "file": null,
+  "status": 301,
+  "contentType": "",
+  "bytes": 0,
+  "fetchedAt": "2026-10-13T04:24:18.024Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "cache-control": "no-cache, no-store, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "location": "https://www.anthonyshealthhutlakeland.com/"
+  }
+ },
+ "/household-and-eco-friendly-living": {
+  "url": "https://www.anthonyshealthhutlakeland.com/household-and-eco-friendly-living",
+  "file": "desktop/household-and-eco-friendly-living.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118251,
+  "fetchedAt": "2026-10-13T01:03:56.695Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/immune-support": {
+  "url": "https://www.anthonyshealthhutlakeland.com/immune-support",
+  "file": "desktop/immune-support.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118520,
+  "fetchedAt": "2026-10-13T01:03:57.709Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/information-faqs": {
+  "url": "https://www.anthonyshealthhutlakeland.com/information-faqs",
+  "file": "desktop/information-faqs.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 111668,
+  "fetchedAt": "2026-10-13T01:03:45.592Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/joint-bone-and-inflammation-support": {
+  "url": "https://www.anthonyshealthhutlakeland.com/joint-bone-and-inflammation-support",
+  "file": "desktop/joint-bone-and-inflammation-support.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118724,
+  "fetchedAt": "2026-10-13T01:03:58.718Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/menu": {
+  "url": "https://www.anthonyshealthhutlakeland.com/menu",
+  "file": "desktop/menu.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 161630,
+  "fetchedAt": "2026-10-13T01:03:47.611Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "link": "<https://irp.cdn-website.com/29be52b5/dms3rep/multi/opt/AdobeStock_1203933697+%281%29-2880w.jpeg>; rel=preload; as=image; fetchpriority=high",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/natural-body-and-skin-care": {
+  "url": "https://www.anthonyshealthhutlakeland.com/natural-body-and-skin-care",
+  "file": "desktop/natural-body-and-skin-care.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 113971,
+  "fetchedAt": "2026-10-13T01:03:59.733Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/protein-and-fitness-nutrition": {
+  "url": "https://www.anthonyshealthhutlakeland.com/protein-and-fitness-nutrition",
+  "file": "desktop/protein-and-fitness-nutrition.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 119187,
+  "fetchedAt": "2026-10-13T01:04:00.746Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/sleep-mood-and-stress-relief": {
+  "url": "https://www.anthonyshealthhutlakeland.com/sleep-mood-and-stress-relief",
+  "file": "desktop/sleep-mood-and-stress-relief.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118513,
+  "fetchedAt": "2026-10-13T01:04:01.754Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/thank-you": {
+  "url": "https://www.anthonyshealthhutlakeland.com/thank-you",
+  "file": "desktop/thank-you.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 105870,
+  "fetchedAt": "2026-10-13T01:03:51.653Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/vitamins-and-minerals": {
+  "url": "https://www.anthonyshealthhutlakeland.com/vitamins-and-minerals",
+  "file": "desktop/vitamins-and-minerals.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118572,
+  "fetchedAt": "2026-10-13T01:03:48.624Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "link": "<https://irp.cdn-website.com/29be52b5/dms3rep/multi/opt/AdobeStock_590073523-2880w.jpeg>; rel=preload; as=image; fetchpriority=high",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ },
+ "/weight-management-and-metabolism": {
+  "url": "https://www.anthonyshealthhutlakeland.com/weight-management-and-metabolism",
+  "file": "desktop/weight-management-and-metabolism.html",
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "bytes": 118439,
+  "fetchedAt": "2026-10-13T01:04:02.762Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/html;charset=utf-8",
+   "cache-control": "no-cache, must-revalidate",
+   "expires": "Thu, 01 Jan 1970 00:00:00 GMT",
+   "speculation-rules": "\"https://static.cdn-website.com/speculations/rules/prerender-1.0.3.json\"",
+   "x-frame-options": "SAMEORIGIN",
+   "x-content-type-options": "nosniff",
+   "content-security-policy": "frame-ancestors 'self'",
+   "vary": "user-agent,accept-encoding"
+  }
+ }
+}

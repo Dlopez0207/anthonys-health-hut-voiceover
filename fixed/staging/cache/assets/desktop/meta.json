@@ -1,0 +1,30 @@
+{
+ "/robots.txt": {
+  "url": "https://www.anthonyshealthhutlakeland.com/robots.txt",
+  "file": "assets/desktop/b7a9adb9fec4116c-robots.txt",
+  "status": 200,
+  "contentType": "text/plain",
+  "bytes": 177,
+  "fetchedAt": "2026-10-13T10:13:02.113Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/plain",
+   "cache-control": "no-cache, must-revalidate"
+  }
+ },
+ "/runtime-service-worker.js?v=3": {
+  "url": "https://www.anthonyshealthhutlakeland.com/runtime-service-worker.js?v=3",
+  "file": "assets/desktop/daff6ea2aeb2827c-runtime-service-worker.js",
+  "status": 200,
+  "contentType": "text/javascript",
+  "bytes": 18095,
+  "fetchedAt": "2026-10-13T01:05:15.019Z",
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+  "device": "desktop",
+  "headers": {
+   "content-type": "text/javascript",
+   "cache-control": "no-cache, must-revalidate"
+  }
+ }
+}

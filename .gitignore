@@ -3,5 +3,5 @@ test-results/
 playwright-report/
 transcripts/
 results/
-fixed/staging/cache/
+# fixed/staging/cache/ is committed since the v1.2.1 retest (runner serves the same snapshot offline)
 fixed/staging/logs/
