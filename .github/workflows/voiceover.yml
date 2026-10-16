@@ -30,7 +30,7 @@ jobs:
           WANT: ${{ inputs.jobs || 'all' }}
         run: |
           all='[{"browser":"webkit","page":"home"},{"browser":"webkit","page":"about-us"},{"browser":"webkit","page":"contact-us"},{"browser":"webkit","page":"menu"},{"browser":"webkit","page":"vitamins-and-minerals"},{"browser":"chromium","page":"home"}]'
-          m=$(echo "$all" | jq -c --arg w "$WANT" 'if $w == "all" then . else map(select(("," + $w + ",") | contains("," + .browser + "-" + .page + ","))) end')
+          m=$(echo "$all" | jq -c --arg w "$WANT" 'if $w == "all" then . else map(select(. as $j | ("," + $w + ",") | contains("," + $j.browser + "-" + $j.page + ","))) end')
           echo "matrix=$m" >> "$GITHUB_OUTPUT"; echo "$m"
 
   voiceover:
