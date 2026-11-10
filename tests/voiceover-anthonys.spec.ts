@@ -75,6 +75,8 @@ test.describe(RETEST ? "VoiceOver — anthonyshealthhutlakeland.com (retest, cor
       // Time kept back for the sections after the read-through (and the form scenario on /contact-us).
       const RESERVE = formHere ? 22 * 60 * 1000 : 14 * 60 * 1000;
       const url = `${ORIGIN}${pg.path}`;
+      // Published site (baseline): read-only. Only GET/HEAD leave the browser; every other request is answered locally (204).
+      if (!RETEST) await page.route("**/*", (r) => { const m = r.request().method(); return m === "GET" || m === "HEAD" ? r.fallback() : r.fulfill({ status: 204, body: "" }); });
       await page.goto(url, { waitUntil: "load" });
       await page.locator("body").waitFor();
       await page.waitForTimeout(3000);
